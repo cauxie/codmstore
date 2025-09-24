@@ -61,13 +61,7 @@ DATABASES = {
     }
 }
 
-# Optional: Use PostgreSQL if DATABASE_URL is available
-if os.environ.get('DATABASE_URL'):
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600
-    )
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
