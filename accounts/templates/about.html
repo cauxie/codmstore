@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0f0f0f;
+      color: #fff;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #a78bfa, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .service-card {
+      background: rgba(30, 30, 30, 0.7);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      transition: all 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(167, 139, 250, 0.2);
+    }
+    .back-button {
+      transition: all 0.3s ease;
+    }
+    .back-button:hover {
+      transform: translateX(-5px);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <div class="flex items-center">
+        <div class="w-10 h-10 bg-transparent mr-2">
+          <img src="{% static 'images/logo1.png' %}" alt="logo" class="w-full h-full object-contain rounded-full">
+        </div>
+        <span class="text-lg font-semibold">CAUXIE-SALES</span>
+      </div>
+      <div class="flex items-center space-x-6">
+        <a href="{% url 'home' %}" class="text-gray-300 hover:text-white">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-12 max-w-6xl">
+   
+
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <div class="flex justify-center mb-6">
+        <div class="w-32 h-32 bg-transparent">
+          <img src="{% static 'images/priley.png' %}" alt="Cauxie Sales Logo" class="w-full h-full object-contain">
+        </div>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">What We Do at <span class="gradient-text">Cauxie Sales</span></h1>
+      <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+        Your one-stop destination for all your Call of Duty: Mobile needs
+      </p>
+    </div>
+
+    <!-- Services Section -->
+    <div class="mb-16">
+      <h2 class="text-3xl font-bold mb-12 text-center text-purple-400">Our Services</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- CODM Accounts -->
+        <div class="service-card p-6 rounded-lg text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-user text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">CODM Accounts</h3>
+          <p class="text-gray-300">
+            We buy and sell premium Call of Duty: Mobile accounts with rare skins, high rankings, and exclusive items.
+          </p>
+        </div>
+
+        <!-- CP Points -->
+        <div class="service-card p-6 rounded-lg text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-coins text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">CP Points</h3>
+          <p class="text-gray-300">
+            We buy CP (Cod Points) for players at competitive rates, helping you get the in-game currency you need.
+          </p>
+        </div>
+
+        <!-- Gaming Gadgets -->
+        <div class="service-card p-6 rounded-lg text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-gamepad text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Gaming Gadgets</h3>
+          <p class="text-gray-300">
+            We sell the best-fitted gaming gadgets including controllers, headphones, and mobile gaming accessories.
+          </p>
+        </div>
+
+        <!-- Delivery -->
+        <div class="service-card p-6 rounded-lg text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-shipping-fast text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Nationwide Delivery</h3>
+          <p class="text-gray-300">
+            We deliver to any location across Nigeria, ensuring you get your gaming products wherever you are.
+          </p>
+        </div>
+
+        <!-- Battle Tournaments -->
+        <div class="service-card p-6 rounded-lg text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-trophy text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Battle Tournaments</h3>
+          <p class="text-gray-300">
+            Join our competitive CODM tournaments with cash prizes and exclusive rewards for top performers.
+          </p>
+        </div>
+
+        <!-- Custom Requests -->
+        <div class="service-card p-6 rounded-lg text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-star text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Custom Requests</h3>
+          <p class="text-gray-300">
+            Need something specific? We handle custom requests for accounts, items, and gaming equipment.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-center text-purple-400">How It Works</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+            1
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Contact Us</h3>
+          <p class="text-gray-300">
+            Reach out via WhatsApp or Discord with what you're looking for
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+            2
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Get Quote</h3>
+          <p class="text-gray-300">
+            We'll provide pricing and details for your requested service
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+            3
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Receive Service</h3>
+          <p class="text-gray-300">
+            Complete payment and receive your account, CP, or product
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why Choose Us -->
+    <div class="mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-center text-purple-400">Why Choose Cauxie Sales?</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <div class="flex items-start mb-6">
+            <div class="bg-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+              <i class="fas fa-check text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Trusted Transactions</h3>
+              <p class="text-gray-300">Secure and reliable service with countless satisfied customers</p>
+            </div>
+          </div>
+          <div class="flex items-start mb-6">
+            <div class="bg-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+              <i class="fas fa-check text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Quality Accounts</h3>
+              <p class="text-gray-300">We offer only premium CODM accounts with verified items and stats</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="bg-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+              <i class="fas fa-check text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
+              <p class="text-gray-300">Quick nationwide delivery for all physical products</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-start mb-6">
+            <div class="bg-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+              <i class="fas fa-check text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Competitive Prices</h3>
+              <p class="text-gray-300">Best rates for buying and selling CODM accounts and CP</p>
+            </div>
+          </div>
+          <div class="flex items-start mb-6">
+            <div class="bg-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+              <i class="fas fa-check text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">24/7 Support</h3>
+              <p class="text-gray-300">Round-the-clock customer support via WhatsApp and Discord</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="bg-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+              <i class="fas fa-check text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold mb-2">Gaming Expertise</h3>
+              <p class="text-gray-300">Deep knowledge of CODM and gaming products to serve you better</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center">
+      <h2 class="text-3xl font-bold mb-4 text-purple-400">Get In Touch</h2>
+      <p class="text-gray-300 mb-6 max-w-2xl mx-auto">
+        Ready to buy or sell CODM accounts, purchase CP, or get gaming gadgets? Contact us today!
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+        <a href="https://wa.me/+2347015902747" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center justify-center">
+          <i class="fab fa-whatsapp mr-2 text-xl"></i> WhatsApp Us
+        </a>
+        <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg flex items-center justify-center">
+          <i class="fab fa-discord mr-2 text-xl"></i> Join Discord
+        </a>
+      </div>
+    </div>
+  </div>
+4/
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 py-8 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p>© 2023 Cauxie-Sales. All rights reserved.</p>
+      <div class="flex justify-center space-x-6 mt-4">
+        <a href="{% url 'privacy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+        <a href="{% url 'terms' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+        <a href="{% url 'about' %}" class="text-purple-400 hover:text-purple-300 transition duration-300">About Us</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

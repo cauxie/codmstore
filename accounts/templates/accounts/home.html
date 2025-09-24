@@ -1,0 +1,941 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cauxie Sales</title>
+  <!-- Tailwind CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <style>
+    .menu-item {
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .menu-item:hover {
+      transform: translateX(5px);
+      color: white;
+    }
+    
+    /* Fix for mobile menu visibility */
+    nav {
+      position: relative;
+      z-index: 40;
+    }
+    
+    #mobile-menu {
+      z-index: 50;
+      transform: translateZ(0); /* Force hardware acceleration */
+    }
+    
+    /* Ensure the video doesn't cover the dropdown */
+    video {
+      z-index: 1;
+    }
+    
+    /* Navbar content should be above video */
+    .relative.z-10 {
+      z-index: 20;
+      
+    }
+
+    
+  </style>
+   <style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: black; /* Set default background to black */
+  }
+
+  /* Create a pseudo-element for the background image with extra padding */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* Calculate height to include the black card section plus padding */
+    height: calc(100% + 100px); /* Adjust the 100px value as needed */
+    background-image: url("{% static 'images/bg2.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+  }
+</style>
+ 
+</head>
+<body class="bg-black text-white">
+
+ <!-- Navbar -->
+<nav class="relative bg-black rounded-full shadow-lg w-[95%] max-w-6xl mx-auto mt-6">
+  
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline
+         class="absolute inset-0 w-full h-full object-cover rounded-full z-0 opacity-70 pointer-events-none">
+    <source src="{% static 'images/navbarbg.mp4' %}" type="video/mp4">
+  </video>
+
+  <!-- Navbar Content -->
+  <div class="relative z-20 flex justify-between items-center px-6 py-3">
+    <!-- Logo + text -->
+    <div class="flex items-center">
+      <div id="logo" class="w-12 h-12 bg-transparent mr-2">
+        <img src="{% static 'images/logo1.png' %}" alt="logo" class="w-full h-full object-contain">
+      </div>
+      <span class="text-lg font-semibold tracking-wide text-white">CAUXIE-SALES</span>
+    </div>
+
+   <!-- Desktop Menu -->
+<ul class="hidden md:flex space-x-6 text-sm items-center">
+  <li class="text-gray-400 hover:text-white font-semibold cursor-pointer">Home</li>
+  <li class="text-gray-400 hover:text-white font-semibold cursor-pointer">Shop</li>
+  <li>
+    <button class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 cursor-pointer">
+      <i class="fa-solid fa-fire text-red-500"></i> Battle
+    </button>
+  </li>
+  <li class="text-gray-400 hover:text-white font-semibold cursor-pointer">Contact Us</li>
+  <li class="text-gray-400 hover:text-white font-semibold cursor-pointer flex items-center">
+    <span class="material-symbols-outlined text-base leading-none">shopping_cart</span>
+  </li>
+  <li>
+    <a href="#" class="bg-purple-500 text-black px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-[#d000ff] hover:text-white transition cursor-pointer">
+      Make Request <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+    </a>
+  </li>
+</ul>
+
+
+    <!-- Mobile Toggle -->
+    <div class="md:hidden flex items-center">
+      <button id="mobile-menu-toggle" class="text-white text-2xl focus:outline-none">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Dropdown placed OUTSIDE nav -->
+<div id="mobile-menu" 
+     class="hidden absolute left-0 top-[90px] w-full bg-[#111] md:hidden px-6 py-6 flex flex-col items-center gap-6 text-base z-50 shadow-lg rounded-xl border border-purple-900">
+
+  <a href="#" class="text-gray-400 hover:text-white font-semibold text-center">Home</a>
+  <a href="#" class="text-gray-400 hover:text-white font-semibold text-center">Shop</a>
+  
+  <button class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 cursor-pointer">
+    <i class="fa-solid fa-fire text-red-500"></i> Battle
+  </button>
+  
+  <a href="#" class="text-gray-400 hover:text-white font-semibold text-center">Contact Us</a>
+  
+  <a href="#" class="bg-purple-500 text-black px-6 py-3 rounded-full flex items-center gap-2 justify-center text-sm font-semibold shadow-md hover:bg-[#d000ff] hover:text-white transition mt-2">
+    Make Requests <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+  </a>
+</div>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleButton = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (toggleButton && mobileMenu) {
+        toggleButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+          
+          // Change icon when menu is open/closed
+          const icon = toggleButton.querySelector('i');
+          if (mobileMenu.classList.contains('hidden')) {
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+          } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-xmark');
+          }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          const isClickInsideNav = event.target.closest('nav');
+          const isToggleButton = event.target.closest('#mobile-menu-toggle');
+          
+          if (!isClickInsideNav && !mobileMenu.classList.contains('hidden') && !isToggleButton) {
+            mobileMenu.classList.add('hidden');
+            const icon = toggleButton.querySelector('i');
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+    });
+  </script>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+  <!-- Black Card Wrapper -->
+  <div class="bg-black shadow-lg p-8 rounded-2xl">
+    <!-- Flex container for image and text -->
+    <div class="flex flex-col md:flex-row gap-8 items-center">
+      <!-- Image on left for desktop, top for mobile -->
+      <div class="w-full md:w-1/2 order-2 md:order-1">
+        <img src="{% static 'images/landing.png' %}" 
+             alt="CODM Showcase" 
+             class="rounded-xl shadow-lg w-full h-auto object-cover">
+      </div>
+      
+      <!-- Text content on right for desktop, below image for mobile -->
+      <div class="w-full md:w-1/2 order-1 md:order-2">
+        <h2 class="text-2xl font-extrabold text-center md:text-left text-white mb-2">
+          Cauxie Sales
+        </h2>
+        <div class="w-24 h-1 bg-purple-500 mx-auto md:mx-0 mb-4"></div>
+
+        <p class="text-white font-bold leading-relaxed text-lg">
+          <span class="text-purple-500 font-bold">Cauxie Sales</span> is your trusted marketplace for 
+          <span class="text-green-500 font-bold">Call of Duty: Mobile (CODM)</span> players.  
+          We specialize in helping gamers buy and sell CODM accounts, 
+          unlock exclusive gun skins, character skins, and CODM credits, 
+          and get access to premium gaming accessories.  
+        </p>
+
+        <p class="text-white font-bold mt-4">
+          Whether you're upgrading your loadout or looking for rare in-game items, 
+          <span class="text-purple-500">Cauxie Sales</span> makes trading safe, fast, and reliable.  
+          We work hard to connect buyers and sellers across the globe.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Two buttons below the card -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+      <!-- Black button with white text -->
+      <a href="#shop" class="bg-black text-white font-semibold px-8 py-3 rounded-lg border border-white hover:bg-gray-900 transition text-center">
+        Go to Shop
+      </a>
+      
+      <!-- Purple button with black text -->
+      <a href="#contact" class="bg-purple-600 text-black font-semibold px-8 py-3 rounded-lg hover:bg-purple-700 transition text-center">
+        Contact Us
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Feature Cards Section -->
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-white mb-12">How It Works</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Card 1: Search -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-magnifying-glass text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Browse Accounts</h3>
+        <p class="text-gray-400 mb-4">Search through available accounts and find your ideal match.</p>
+      </div>
+
+      <!-- Card 2: Chat -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-message text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Chat Us Up</h3>
+        <p class="text-gray-400 mb-4">Hit the buy button and you will be directed to us for discussion.</p>
+      </div>
+
+      <!-- Card 3: Handshake -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-blue-800 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-handshake text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Finalize Your Purchase</h3>
+        <p class="text-gray-400 mb-4">Complete your purchase and the account logins will be sent to you.</p>
+      </div>
+
+      <!-- Card 4: Sell -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300 relative">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-mobile-alt text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Sell Your Account</h3>
+        <p class="text-gray-400 mb-6">Sell your CODM account to us and get your payment ASAP.</p>
+        
+        <!-- Sell Now Button -->
+        <button class="sell-btn w-full bg-purple-600 text-black font-semibold py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300 absolute bottom-0 left-0 right-0 mx-3 mb-3">
+          Sell Now
+        </button>
+        
+        <!-- Invisible spacer to maintain layout -->
+        <div class="invisible py-2">Placeholder</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .feature-card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .feature-card:hover .sell-btn {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>
+
+<!-- Logo Animation Section -->
+<div class="max-w-4xl mx-auto px-6 py-12">
+  <div class="bg-white rounded-2xl shadow-xl p-8">
+    <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Aesthetics</h3>
+    
+    <div class="overflow-hidden py-2">
+      <div class="flex animate-marquee whitespace-nowrap">
+        <!-- Logo items with proper spacing -->
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmlogo.png' %}" alt="CODM Logo" class="h-16 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/leggings.png' %}" alt="Leggings Logo" class="h-14 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/GHOST.png' %}" alt="Ghost Logo" class="h-12 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/ghostlogo.png' %}" alt="Valorant Logo" class="h-16 w-auto object-contain">
+        </div>
+        
+        <!-- Duplicate for seamless loop -->
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmlogo.png' %}" alt="CODM Logo" class="h-16 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/leggings.png' %}" alt="Leggings Logo" class="h-14 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmacc.png' %}" alt="Ghost Logo" class="h-12 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmcp.png' %}" alt="Valorant Logo" class="h-16 w-auto object-contain">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
+    display: flex;
+  }
+  
+  .logo-item {
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-item:hover {
+    transform: scale(1.1);
+  }
+</style>
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Left-aligned heading with HR -->
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold text-white mb-4">Recent Uploads</h2>
+      <hr class="border-gray-700">
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <!-- Product Card 1 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Video placeholder -->
+        <div class="h-48 bg-gray-800 flex items-center justify-center relative">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-play text-white text-2xl"></i>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">Premium CODM Account</h5>
+          <p class="text-gray-400 text-sm mb-4">Includes legendary skins and rare items</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$33.00</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product Card 2 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Video placeholder -->
+        <div class="h-48 bg-gray-800 flex items-center justify-center relative">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-play text-white text-2xl"></i>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">Legendary Weapon Skin</h5>
+          <p class="text-gray-400 text-sm mb-4">Exclusive animated weapon blueprint</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$25.00</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product Card 3 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Video placeholder -->
+        <div class="h-48 bg-gray-800 flex items-center justify-center relative">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-play text-white text-2xl"></i>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">Character Bundle</h5>
+          <p class="text-gray-400 text-sm mb-4">Special operator skin with finishing move</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$40.00</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product Card 4 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Video placeholder -->
+        <div class="h-48 bg-gray-800 flex items-center justify-center relative">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-play text-white text-2xl"></i>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">COD Points Package</h5>
+          <p class="text-gray-400 text-sm mb-4">Get 2400 CP + 200 bonus</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$20.00</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- See More button on the right side -->
+    <div class="flex justify-end">
+      <button class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+        See More...
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product {
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .product:hover {
+    transform: translateY(-5px);
+  }
+
+  .product .buy-btn {
+    background: #8B5CF6;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: 0.3s all;
+  }
+
+  .product:hover .buy-btn {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .product:hover .fa-play {
+    transform: scale(1.2);
+    transition: transform 0.3s ease;
+  }
+</style>
+
+  <!-- Hosted Matches Section -->
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Right-aligned heading with pink HR -->
+    <div class="flex flex-col items-end mb-12">
+      <h2 class="text-3xl font-bold text-white mb-4 text-right">Join Our Hosted Matches</h2>
+      <hr class="border-pink-500 w-32 h-1 rounded-full">
+    </div>
+    
+    <!-- Video card with overlay -->
+    <div class="relative rounded-2xl overflow-hidden shadow-2xl mx-auto w-full max-w-3xl">
+      <!-- Video background -->
+      <video autoplay muted loop playsinline class="w-full h-auto">
+        <source src="{% static 'images/ssstik.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      
+      <!-- Purple transparent overlay with button -->
+      <div class="absolute inset-0 bg-purple-900 bg-opacity-60 flex flex-col items-center justify-center p-6">
+        <div class="text-center mb-6">
+          <p class="text-white text-2xl md:text-3xl font-bold">
+            Feel free to join our hosted matches and stand a chance to win cash prizes
+          </p>
+        </div>
+        
+        <!-- Learn More button inside the video card -->
+        <button class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105">
+          Learn more about our hosted matches
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gaming Accessories Section -->
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Left-aligned heading with dark blue HR -->
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold text-white mb-4">Gaming Accessories</h2>
+      <hr class="border-blue-800 w-32 h-1 rounded-full">
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <!-- Product Card 1 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Image slider -->
+        <div class="h-48 bg-gray-800 relative overflow-hidden">
+          <div class="slide-container flex transition-transform duration-500 ease-in-out">
+            <img src="{% static 'images/accessory1-1.jpg' %}" alt="Gaming Headset" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory1-2.jpg' %}" alt="Gaming Headset Angle" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory1-3.jpg' %}" alt="Gaming Headset Side" class="w-full h-48 object-cover flex-shrink-0">
+          </div>
+          <!-- Navigation dots -->
+          <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
+            <div class="w-2 h-2 bg-white rounded-full dot active"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">Premium Gaming Headset</h5>
+          <p class="text-gray-400 text-sm mb-4">7.1 Surround Sound with RGB Lighting</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$89.99</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product Card 2 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Image slider -->
+        <div class="h-48 bg-gray-800 relative overflow-hidden">
+          <div class="slide-container flex transition-transform duration-500 ease-in-out">
+            <img src="{% static 'images/accessory2-1.jpg' %}" alt="Mechanical Keyboard" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory2-2.jpg' %}" alt="Mechanical Keyboard RGB" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory2-3.jpg' %}" alt="Mechanical Keyboard Side" class="w-full h-48 object-cover flex-shrink-0">
+          </div>
+          <!-- Navigation dots -->
+          <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
+            <div class="w-2 h-2 bg-white rounded-full dot active"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">Mechanical Keyboard</h5>
+          <p class="text-gray-400 text-sm mb-4">RGB Backlit with Brown Switches</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$129.99</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product Card 3 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Image slider -->
+        <div class="h-48 bg-gray-800 relative overflow-hidden">
+          <div class="slide-container flex transition-transform duration-500 ease-in-out">
+            <img src="{% static 'images/accessory3-1.jpg' %}" alt="Gaming Mouse" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory3-2.jpg' %}" alt="Gaming Mouse Side" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory3-3.jpg' %}" alt="Gaming Mouse RGB" class="w-full h-48 object-cover flex-shrink-0">
+          </div>
+          <!-- Navigation dots -->
+          <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
+            <div class="w-2 h-2 bg-white rounded-full dot active"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">Wireless Gaming Mouse</h5>
+          <p class="text-gray-400 text-sm mb-4">16000 DPI with 6 Programmable Buttons</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$79.99</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+
+      <!-- Product Card 4 -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        
+        <!-- Image slider -->
+        <div class="h-48 bg-gray-800 relative overflow-hidden">
+          <div class="slide-container flex transition-transform duration-500 ease-in-out">
+            <img src="{% static 'images/accessory4-1.jpg' %}" alt="Gaming Chair" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory4-2.jpg' %}" alt="Gaming Chair Side" class="w-full h-48 object-cover flex-shrink-0">
+            <img src="{% static 'images/accessory4-3.jpg' %}" alt="Gaming Chair Back" class="w-full h-48 object-cover flex-shrink-0">
+          </div>
+          <!-- Navigation dots -->
+          <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
+            <div class="w-2 h-2 bg-white rounded-full dot active"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+            <div class="w-2 h-2 bg-white bg-opacity-50 rounded-full dot"></div>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">Ergonomic Gaming Chair</h5>
+          <p class="text-gray-400 text-sm mb-4">Lumbar Support with Adjustable Armrests</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">$249.99</h4>
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product {
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .product:hover {
+    transform: translateY(-5px);
+  }
+
+  .product .buy-btn {
+    background: #8B5CF6;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: 0.3s all;
+  }
+
+  .product:hover .buy-btn {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  /* Image slider styles */
+  .slide-container {
+    width: 300%; /* 3 images */
+  }
+  
+  .product:hover .slide-container {
+    transform: translateX(-33.333%); /* Slide to show second image */
+  }
+  
+  .product:hover .slide-container {
+    transition: transform 5s ease-in-out;
+  }
+  
+  /* Alternative: Manual slide on click */
+  .product .dot {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .product .dot.active {
+    background-color: #8B5CF6;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Initialize image sliders
+    const products = document.querySelectorAll('.product');
+    
+    products.forEach(product => {
+      const dots = product.querySelectorAll('.dot');
+      const slideContainer = product.querySelector('.slide-container');
+      
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          // Update active dot
+          dots.forEach(d => d.classList.remove('active'));
+          dot.classList.add('active');
+          
+          // Slide to the corresponding image
+          slideContainer.style.transform = `translateX(-${index * 33.333}%)`;
+        });
+      });
+    });
+  });
+</script>
+
+<!-- Our Customers Review Section -->
+<div class="bg-white py-12">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Right-aligned heading with orange HR -->
+    <div class="flex flex-col items-end mb-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4 text-right">Our Customers Review</h2>
+      <hr class="border-orange-500 w-32 h-1 rounded-full">
+    </div>
+    
+    <!-- Horizontal scrolling reviews container -->
+    <div class="overflow-x-auto pb-6">
+      <div class="flex space-x-6 pb-4" style="min-width: max-content;">
+        <!-- Django Template Loop for Reviews -->
+        {% for review in reviews %}
+        <!-- Review Card -->
+        <div class="review-card bg-white rounded-xl shadow-md p-5 min-w-[280px] max-w-[300px]">
+          <div class="flex items-center mb-3">
+            {% if review.photo %}
+            <img src="{{ review.photo.url }}" alt="{{ review.full_name }}" class="w-10 h-10 rounded-full object-cover mr-3">
+            {% else %}
+            <div class="w-10 h-10 bg-{{ review.color }}-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+              {{ review.initials }}
+            </div>
+            {% endif %}
+            <div>
+              <h4 class="font-semibold text-gray-800 text-sm">{{ review.full_name }}</h4>
+              <p class="text-xs text-gray-500">{{ review.user_type|default:"CODM Player" }}</p>
+            </div>
+          </div>
+          <div class="star-rating flex mb-3">
+            {% for i in "12345" %}
+              {% if forloop.counter <= review.rating %}
+                <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+              {% else %}
+                <i class="fa-regular fa-star text-yellow-400 text-sm"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <p class="text-gray-600 text-sm">"{{ review.comment }}"</p>
+        </div>
+        {% empty %}
+        <!-- Default reviews if no reviews exist -->
+        <div class="review-card bg-white rounded-xl shadow-md p-5 min-w-[280px] max-w-[300px]">
+          <div class="flex items-center mb-3">
+            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+              JD
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 text-sm">John Doe</h4>
+              <p class="text-xs text-gray-500">CODM Player</p>
+            </div>
+          </div>
+          <div class="star-rating flex mb-3">
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+          </div>
+          <p class="text-gray-600 text-sm">"Best accounts! Got my dream skin at a great price."</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Leave Review Button -->
+    <div class="flex justify-center mt-10">
+      <button id="openReviewModal" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 shadow-md">
+        Leave Us a Review
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Review Modal -->
+<div id="reviewModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-2xl font-bold text-gray-800">Leave a Review</h3>
+      <button id="closeReviewModal" class="text-gray-500 hover:text-gray-700">
+        <i class="fa-solid fa-times text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- Django Form -->
+    <form method="POST" action="{% url 'submit_review' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <!-- Photo Upload -->
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Add Photo (Optional)</label>
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer" onclick="document.getElementById('id_photo').click()">
+          <i class="fa-solid fa-cloud-arrow-up text-gray-400 text-2xl mb-2"></i>
+          <p class="text-gray-500 text-sm">Click to upload or drag and drop</p>
+          <input type="file" class="hidden" id="id_photo" name="photo">
+        </div>
+      </div>
+      
+      <!-- Full Name -->
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Full Name</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-black" 
+               name="full_name" required>
+      </div>
+
+      <!-- Add this to your review form -->
+<div class="mb-4">
+  <label class="block text-gray-700 mb-2">You are a...</label>
+  <select name="user_type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-black">
+    <option value="">Select your type</option>
+    <option value="CODM Player">CODM Player</option>
+    <option value="Gaming Enthusiast">Gaming Enthusiast</option>
+    <option value="Professional Gamer">Professional Gamer</option>
+    <option value="Content Creator">Content Creator</option>
+    <option value="CODM Collector">CODM Collector</option>
+  </select>
+</div>
+      
+      <!-- Comment -->
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Your Review</label>
+        <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-black" 
+                  rows="3" name="comment" required></textarea>
+      </div>
+      
+      <!-- Star Rating -->
+      <div class="mb-6">
+        <label class="block text-gray-700 mb-2">Your Rating</label>
+        <div class="flex space-x-1">
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="1"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="2"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="3"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="4"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="5"></i>
+        </div>
+        <input type="hidden" id="ratingValue" name="rating" value="0" required>
+      </div>
+      
+      <!-- Submit Button -->
+      <button type="submit" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+        Submit Review
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Simplified JavaScript (only for UI interactions) -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById('reviewModal');
+    const openButton = document.getElementById('openReviewModal');
+    const closeButton = document.getElementById('closeReviewModal');
+    const stars = document.querySelectorAll('.rating-star');
+    const ratingInput = document.getElementById('ratingValue');
+    
+    // Open modal
+    openButton.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+    
+    // Close modal
+    closeButton.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+    
+    // Star rating functionality (UI only)
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const value = parseInt(star.getAttribute('data-value'));
+        ratingInput.value = value;
+        
+        stars.forEach((s, index) => {
+          if (index < value) {
+            s.classList.remove('fa-regular');
+            s.classList.add('fa-solid');
+          } else {
+            s.classList.remove('fa-solid');
+            s.classList.add('fa-regular');
+          }
+        });
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>

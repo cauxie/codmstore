@@ -1,0 +1,1229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cauxie Sales</title>
+  <!-- Tailwind CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <style>
+    /* Skeleton Loading Styles */
+    .skeleton {
+      background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: 4px;
+    }
+    
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+    
+    .skeleton-circle {
+      border-radius: 50%;
+    }
+    
+    #skeleton-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .skeleton-logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+    
+    .skeleton-text {
+      height: 20px;
+      margin-bottom: 10px;
+      width: 200px;
+    }
+    
+    .skeleton-card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Existing styles */
+    .menu-item {
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .menu-item:hover {
+      transform: translateX(5px);
+      color: white;
+    }
+    
+    /* Fix for mobile menu visibility */
+    nav {
+      position: relative;
+      z-index: 40;
+    }
+    
+    #mobile-menu {
+      z-index: 50;
+      transform: translateZ(0); /* Force hardware acceleration */
+    }
+    
+    /* Ensure the video doesn't cover the dropdown */
+    video {
+      z-index: 1;
+    }
+    
+    /* Navbar content should be above video */
+    .relative.z-10 {
+      z-index: 20;
+    }
+  </style>
+  <style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: black; /* Set default background to black */
+  }
+
+  /* Create a pseudo-element for the background image with extra padding */
+  body::before {
+    content: '';
+    position: fixed; /* Changed from absolute to fixed */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; /* Changed from height calculation to cover entire viewport */
+    background-image: url("{% static 'images/bg2.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+  }
+</style>
+ 
+</head>
+<body class="bg-black text-white">
+
+ <!-- Skeleton Loading Screen -->
+<div id="skeleton-loader">
+  <div class="skeleton skeleton-circle skeleton-logo"></div>
+  <div class="skeleton skeleton-text"></div>
+  <div class="skeleton skeleton-text" style="width: 150px; margin-top: 20px;"></div>
+  
+  <div class="max-w-6xl mx-auto px-6 mt-12 w-full">
+    <!-- Skeleton Hero Section -->
+    <div class="skeleton-card" style="height: 400px; margin-bottom: 30px;">
+      <div class="skeleton" style="height: 40px; width: 60%; margin: 20px auto;"></div>
+      <div class="skeleton" style="height: 24px; width: 80%; margin: 15px auto;"></div>
+      <div class="skeleton" style="height: 200px; width: 90%; margin: 30px auto; border-radius: 12px;"></div>
+      <div class="flex justify-center gap-4 mt-4">
+        <div class="skeleton" style="height: 50px; width: 150px; border-radius: 8px;"></div>
+        <div class="skeleton" style="height: 50px; width: 150px; border-radius: 8px;"></div>
+      </div>
+    </div>
+    
+    <!-- Skeleton Feature Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="skeleton-card" style="height: 250px;"></div>
+      <div class="skeleton-card" style="height: 250px;"></div>
+      <div class="skeleton-card" style="height: 250px;"></div>
+      <div class="skeleton-card" style="height: 250px;"></div>
+    </div>
+    
+    <!-- Skeleton Logo Section -->
+    <div class="skeleton-card" style="height: 150px; margin-bottom: 30px;">
+      <div class="skeleton" style="height: 30px; width: 40%; margin: 20px auto;"></div>
+      <div class="skeleton" style="height: 80px; width: 90%; margin: 0 auto; border-radius: 8px;"></div>
+    </div>
+    
+    <!-- Skeleton Products Section -->
+    <div class="skeleton-card" style="height: 500px; margin-bottom: 30px;">
+      <div class="skeleton" style="height: 40px; width: 50%; margin: 20px 0;"></div>
+      <div class="skeleton" style="height: 2px; width: 100%; margin: 10px 0 30px;"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="skeleton" style="height: 300px; border-radius: 8px;"></div>
+        <div class="skeleton" style="height: 300px; border-radius: 8px;"></div>
+        <div class="skeleton" style="height: 300px; border-radius: 8px;"></div>
+        <div class="skeleton" style="height: 300px; border-radius: 8px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Navbar -->
+<nav class="relative bg-black rounded-full shadow-lg w-[95%] max-w-6xl mx-auto mt-6">
+  
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline
+         class="absolute inset-0 w-full h-full object-cover rounded-full z-0 opacity-70 pointer-events-none">
+    <source src="{% static 'images/navbarbg.mp4' %}" type="video/mp4">
+  </video>
+
+  <!-- Navbar Content -->
+  <div class="relative z-20 flex justify-between items-center px-6 py-3">
+    <!-- Logo + text -->
+    <div class="flex items-center">
+      <div id="logo" class="w-12 h-12 bg-transparent mr-2">
+        <img src="{% static 'images/logo1.png' %}" alt="logo" class="w-full h-full object-contain">
+      </div>
+      <span class="text-lg font-semibold tracking-wide text-white">CAUXIE-SALES</span>
+    </div>
+
+   <!-- Desktop Menu -->
+<ul class="hidden md:flex space-x-6 text-sm items-center">
+  <li>
+    <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Home</a>
+  </li>
+  <li>
+    <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Shop</a>
+  </li>
+  <li>
+    <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
+      <i class="fa-solid fa-fire text-red-500"></i> Battle
+    </a>
+  </li>
+  <li>
+    <a href="#contact" class="text-gray-400 hover:text-white font-semibold transition duration-300">Contact Us</a>
+  </li>
+  <li>
+    <a href="{% url 'about' %}" class="text-gray-400 hover:text-white font-semibold flex items-center transition duration-300">
+      <i class="fas fa-info-circle text-base leading-none"></i>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'request' %}" class="bg-purple-500 text-black px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-[#d000ff] hover:text-white transition duration-300">
+      Make Request <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+    </a>
+  </li>
+</ul>
+
+
+    <!-- Mobile Toggle -->
+    <div class="md:hidden flex items-center">
+      <button id="mobile-menu-toggle" class="text-white text-2xl focus:outline-none">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Dropdown placed OUTSIDE nav -->
+<div id="mobile-menu" 
+     class="hidden absolute left-0 top-[90px] w-full bg-black md:hidden px-6 py-6 flex flex-col items-center gap-6 text-base z-50 shadow-lg rounded-xl border border-purple-900">
+
+  <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold text-center">Home</a>
+  <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold text-center">Shop</a>
+  
+   <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
+      <i class="fa-solid fa-fire text-red-500"></i> Battle
+    </a>
+  
+  <a href="#contact" class="text-gray-400 hover:text-white font-semibold text-center">Contact Us</a>
+  
+  <a href="{% url 'request' %}" class="bg-purple-500 text-black px-6 py-3 rounded-full flex items-center gap-2 justify-center text-sm font-semibold shadow-md hover:bg-[#d000ff] hover:text-white transition mt-2">
+    Make Requests <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+  </a>
+</div>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleButton = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (toggleButton && mobileMenu) {
+        toggleButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+          
+          // Change icon when menu is open/closed
+          const icon = toggleButton.querySelector('i');
+          if (mobileMenu.classList.contains('hidden')) {
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+          } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-xmark');
+          }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          const isClickInsideNav = event.target.closest('nav');
+          const isToggleButton = event.target.closest('#mobile-menu-toggle');
+          
+          if (!isClickInsideNav && !mobileMenu.classList.contains('hidden') && !isToggleButton) {
+            mobileMenu.classList.add('hidden');
+            const icon = toggleButton.querySelector('i');
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+    });
+  </script>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+  <!-- Black Card Wrapper -->
+  <div class="bg-black shadow-lg p-8 rounded-2xl">
+    <!-- Flex container for image and text -->
+    <div class="flex flex-col md:flex-row gap-8 items-center">
+      <!-- Image on left for desktop, top for mobile -->
+      <div class="w-full md:w-1/2 order-2 md:order-1">
+        <img src="{% static 'images/landing.png' %}" 
+             alt="CODM Showcase" 
+             class="rounded-xl shadow-lg w-full h-auto object-cover">
+      </div>
+      
+      <!-- Text content on right for desktop, below image for mobile -->
+      <div class="w-full md:w-1/2 order-1 md:order-2">
+        <h2 class="text-2xl font-extrabold text-center md:text-left text-white mb-2">
+          Cauxie Sales
+        </h2>
+        <div class="w-24 h-1 bg-purple-500 mx-auto md:mx-0 mb-4"></div>
+
+        <p class="text-white font-bold leading-relaxed text-lg">
+          <span class="text-purple-500 font-bold">Cauxie Sales</span> is your trusted marketplace for 
+          <span class="text-green-500 font-bold">Call of Duty: Mobile (CODM)</span> players.  
+          We specialize in helping gamers buy and sell CODM accounts, 
+          unlock exclusive gun skins, character skins, and CODM credits, 
+          and get access to premium gaming accessories.  
+        </p>
+
+        <p class="text-white font-bold mt-4">
+          Whether you're upgrading your loadout or looking for rare in-game items, 
+          <span class="text-purple-500">Cauxie Sales</span> makes trading safe, fast, and reliable.  
+          We work hard to connect buyers and sellers across the globe.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Two buttons below the card -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+      <!-- Black button with white text -->
+      <a href="#shop" class="bg-black text-white font-semibold px-8 py-3 rounded-lg border border-white hover:bg-gray-900 transition text-center">
+        Go to Shop
+      </a>
+      
+      <!-- Purple button with black text -->
+      <a href="#contact" class="bg-purple-600 text-black font-semibold px-8 py-3 rounded-lg hover:bg-purple-700 transition text-center">
+        Contact Us
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Feature Cards Section -->
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-white mb-12">How It Works</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Card 1: Search -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-magnifying-glass text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Browse Accounts</h3>
+        <p class="text-gray-400 mb-4">Search through available accounts and find your ideal match.</p>
+      </div>
+
+      <!-- Card 2: Chat -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-message text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Chat Us Up</h3>
+        <p class="text-gray-400 mb-4">Hit the buy button and you will be directed to us for discussion.</p>
+      </div>
+
+      <!-- Card 3: Handshake -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-blue-800 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-handshake text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Finalize Your Purchase</h3>
+        <p class="text-gray-400 mb-4">Complete your purchase and the account logins will be sent to you.</p>
+      </div>
+
+      <!-- Card 4: Sell -->
+      <div class="feature-card bg-gray-900 rounded-xl p-6 text-center shadow-lg hover:shadow-purple-900/20 transition-shadow duration-300 relative">
+        <div class="flex justify-center mb-4">
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-mobile-alt text-white text-2xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Sell Your Account</h3>
+        <p class="text-gray-400 mb-6">Sell your CODM account to us and get your payment ASAP.</p>
+        
+        <!-- Sell Now Button -->
+        <a href="{% url 'request' %}">
+        <button class="sell-btn w-full bg-purple-600 text-black font-semibold py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300 absolute bottom-0 left-0 right-0 mx-3 mb-3">
+          Sell Now
+        </button>
+        </a>
+        
+        <!-- Invisible spacer to maintain layout -->
+        <div class="invisible py-2">Placeholder</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .feature-card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .feature-card:hover .sell-btn {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>
+
+<!-- Logo Animation Section -->
+<div class="max-w-4xl mx-auto px-6 py-12">
+  <div class="bg-white rounded-2xl shadow-xl p-8">
+    <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Aesthetics</h3>
+    
+    <div class="overflow-hidden py-2">
+      <div class="flex animate-marquee whitespace-nowrap">
+        <!-- Logo items with proper spacing -->
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmlogo.png' %}" alt="CODM Logo" class="h-16 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/leggings.png' %}" alt="Leggings Logo" class="h-14 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/GHOST.png' %}" alt="Ghost Logo" class="h-12 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/ghostlogo.png' %}" alt="Valorant Logo" class="h-16 w-auto object-contain">
+        </div>
+        
+        <!-- Duplicate for seamless loop -->
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmlogo.png' %}" alt="CODM Logo" class="h-16 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/leggings.png' %}" alt="Leggings Logo" class="h-14 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmacc.png' %}" alt="Ghost Logo" class="h-12 w-auto object-contain">
+        </div>
+        
+        <div class="logo-item mx-8 flex-shrink-0">
+          <img src="{% static 'images/codmcp.png' %}" alt="Valorant Logo" class="h-16 w-auto object-contain">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
+    display: flex;
+  }
+  
+  .logo-item {
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-item:hover {
+    transform: scale(1.1);
+  }
+</style>
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Left-aligned heading with HR -->
+    <!-- Recent Uploads Section (Sold Products) -->
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Left-aligned heading with HR -->
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold text-white mb-4">Recently Sold</h2>
+      <hr class="border-gray-700">
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      {% for product in sold_products %}
+      <!-- Product Card -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sold Badge -->
+        <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SOLD
+        </div>
+        
+        <!-- Video or Image -->
+        <div class="h-48 bg-gray-800 flex items-center justify-center relative">
+          {% if product.video %}
+          <video class="w-full h-full object-cover" muted loop>
+            <source src="{{ product.video.url }}" type="video/mp4">
+          </video>
+          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+              <i class="fa-solid fa-play text-white text-2xl"></i>
+            </div>
+          </div>
+          {% elif product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center opacity-80">
+              <i class="fa-solid fa-image text-white text-2xl"></i>
+            </div>
+          </div>
+          {% else %}
+          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-image text-white text-2xl"></i>
+          </div>
+          {% endif %}
+          
+          <!-- Sold Overlay -->
+          <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+            <div class="text-white text-center">
+              <i class="fa-solid fa-check-circle text-3xl text-green-400 mb-2"></i>
+              <p class="text-sm font-semibold">Successfully Sold</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">{{ product.name }}</h5>
+          <p class="text-gray-400 text-sm mb-4">{{ product.description|truncatewords:8 }}</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">
+            ${{ product.price }}
+            {% if product.sale_price %}
+            <span class="text-gray-400 line-through text-sm ml-2">${{ product.sale_price }}</span>
+            {% endif %}
+          </h4>
+          <div class="w-full bg-gray-700 text-gray-300 py-2 rounded-lg text-center">
+            <i class="fa-solid fa-check-circle text-green-400 mr-2"></i>
+            Sold
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-span-4 text-center py-12">
+        <div class="text-gray-400 text-lg mb-4">
+          <i class="fa-solid fa-box text-4xl mb-3"></i>
+          <p>No recently sold items yet.</p>
+        </div>
+        <p class="text-gray-500">Check back later to see completed sales!</p>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <!-- See More button on the right side -->
+    <div class="flex justify-end">
+      <a href="{% url 'shop' %}" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+        View Available Products
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product {
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .product:hover {
+    transform: translateY(-5px);
+  }
+  
+  .product:hover .fa-play {
+    transform: scale(1.2);
+    transition: transform 0.3s ease;
+  }
+</style>
+
+ <!-- Hosted Matches Section -->
+<div class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Right-aligned heading with pink HR -->
+    <div class="flex flex-col items-end mb-12">
+      <h2 class="text-3xl font-bold text-white mb-4 text-right">Join Our Hosted Matches</h2>
+      <hr class="border-pink-500 w-32 h-1 rounded-full">
+    </div>
+    
+    <!-- Video card with overlay -->
+    <div class="relative rounded-2xl overflow-hidden shadow-2xl mx-auto w-full max-w-3xl">
+      <!-- Video background -->
+      <video autoplay muted loop playsinline class="w-full h-auto">
+        <source src="{% static 'images/ssstik.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      
+      <!-- Purple transparent overlay with text only -->
+      <div class="absolute inset-0 bg-purple-900 bg-opacity-60 flex flex-col items-center justify-center p-6">
+        <div class="text-center mb-4">
+          <p class="text-white text-2xl md:text-3xl font-bold">
+            Feel free to join our hosted matches and stand a chance to win cash prizes
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Image placeholder below the video -->
+    <div class="mt-6 flex justify-center">
+      <img src="{% static 'images/fgg.png' %}" 
+           alt="Hosted Matches Preview" 
+           class="rounded-xl shadow-lg w-full max-w-md h-auto object-cover">
+    </div>
+    
+    <!-- Button below the image -->
+    <div class="mt-6 flex justify-center">
+     <a href="{% url 'battle' %}" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 inline-block">
+  Learn more about our hosted matches
+</a>
+    </div>
+  </div>
+</div>
+
+<!-- Gaming Accessories Section -->
+<div id="gaming-accessories" class="bg-black py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Left-aligned heading with dark blue HR -->
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold text-white mb-4">Gaming Accessories</h2>
+      <hr class="border-blue-800 w-32 h-1 rounded-full">
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      {% for accessory in accessories %}
+      <!-- Accessory Card -->
+      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+        <!-- Sale Badge -->
+        {% if accessory.status == 'sale' %}
+        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SALE
+        </div>
+        {% elif accessory.status == 'sold' %}
+        <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+          SOLD
+        </div>
+        {% endif %}
+        
+        <!-- Image slider -->
+        <div class="h-48 bg-gray-800 relative overflow-hidden">
+          <div class="slide-container flex transition-transform duration-500 ease-in-out">
+            {% for image in accessory.get_images %}
+            <img src="{{ image.url }}" alt="{{ accessory.name }} image {{ forloop.counter }}" class="w-full h-48 object-cover flex-shrink-0">
+            {% endfor %}
+          </div>
+          
+          <!-- Navigation dots (only show if multiple images) -->
+          {% if accessory.has_multiple_images %}
+          <div class="absolute bottom-3 left-0 right-0 flex justify-center space-x-2">
+            {% for image in accessory.get_images %}
+            <div class="w-2 h-2 bg-white {% if forloop.first %}rounded-full dot active{% else %}bg-opacity-50 rounded-full dot{% endif %}" 
+                 data-index="{{ forloop.counter0 }}"></div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        
+        <div class="p-5">
+          <h5 class="p-name text-white font-semibold text-lg mb-2">{{ accessory.name }}</h5>
+          <p class="text-gray-400 text-sm mb-4">{{ accessory.description|truncatewords:10 }}</p>
+          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">
+            ${{ accessory.current_price }}
+            {% if accessory.is_on_sale and accessory.sale_price %}
+            <span class="text-gray-400 line-through text-sm ml-2">${{ accessory.price }}</span>
+            {% endif %}
+          </h4>
+          {% if accessory.status != 'sold' %}
+          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300">
+            Buy Now
+          </button>
+          {% else %}
+          <button class="w-full bg-gray-600 text-gray-300 py-2 rounded-lg cursor-not-allowed" disabled>
+            Sold Out
+          </button>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-span-4 text-center py-12">
+        <div class="text-gray-400 text-lg mb-4">
+          <i class="fa-solid fa-gamepad text-4xl mb-3"></i>
+          <p>No gaming accessories available at the moment.</p>
+        </div>
+        <p class="text-gray-500">Check back soon for new accessories!</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+<style>
+  .product {
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .product:hover {
+    transform: translateY(-5px);
+  }
+
+  .product .buy-btn {
+    background: #8B5CF6;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: 0.3s all;
+  }
+
+  .product:hover .buy-btn {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  /* Image slider styles */
+  .slide-container {
+    width: 300%; /* 3 images */
+  }
+  
+  .product:hover .slide-container {
+    transform: translateX(-33.333%); /* Slide to show second image */
+  }
+  
+  .product:hover .slide-container {
+    transition: transform 5s ease-in-out;
+  }
+  
+  /* Alternative: Manual slide on click */
+  .product .dot {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .product .dot.active {
+    background-color: #8B5CF6;
+  }
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize image sliders for accessories
+  const accessoryProducts = document.querySelectorAll('#gaming-accessories .product');
+  
+  accessoryProducts.forEach(product => {
+    const dots = product.querySelectorAll('.dot');
+    const slideContainer = product.querySelector('.slide-container');
+    const imageCount = dots.length;
+    
+    // Only initialize slider if there are multiple images
+    if (imageCount > 1) {
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          // Update active dot
+          dots.forEach(d => {
+            d.classList.remove('active');
+            d.classList.add('bg-opacity-50');
+          });
+          dot.classList.add('active');
+          dot.classList.remove('bg-opacity-50');
+          
+          // Slide to the corresponding image
+          const slidePercentage = (index * 100) / imageCount;
+          slideContainer.style.transform = `translateX(-${slidePercentage}%)`;
+        });
+      });
+      
+      // Auto-slide on hover
+      product.addEventListener('mouseenter', () => {
+        if (imageCount > 1) {
+          slideContainer.style.transform = 'translateX(-33.333%)';
+          // Update dots
+          dots.forEach((dot, i) => {
+            if (i === 0) {
+              dot.classList.remove('active');
+              dot.classList.add('bg-opacity-50');
+            } else if (i === 1) {
+              dot.classList.add('active');
+              dot.classList.remove('bg-opacity-50');
+            }
+          });
+        }
+      });
+      
+      product.addEventListener('mouseleave', () => {
+        if (imageCount > 1) {
+          slideContainer.style.transform = 'translateX(0)';
+          // Update dots
+          dots.forEach((dot, i) => {
+            if (i === 0) {
+              dot.classList.add('active');
+              dot.classList.remove('bg-opacity-50');
+            } else if (i === 1) {
+              dot.classList.remove('active');
+              dot.classList.add('bg-opacity-50');
+            }
+          });
+        }
+      });
+    }
+  });
+});
+</script>
+
+<!-- Our Customers Review Section -->
+ 
+<div class="bg-white text-white pt-16 pb-8">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Right-aligned heading with orange HR -->
+    <div class="flex flex-col items-end mb-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4 text-right">Our Customers Review</h2>
+      <hr class="border-orange-500 w-32 h-1 rounded-full">
+    </div>
+    
+    <!-- Horizontal scrolling reviews container -->
+    <div class="overflow-x-auto pb-6">
+      <div class="flex space-x-6 pb-4" style="min-width: max-content;">
+        <!-- Django Template Loop for Reviews -->
+        {% for review in reviews %}
+        <!-- Review Card -->
+        <div class="review-card bg-white rounded-xl shadow-md p-5 min-w-[280px] max-w-[300px]">
+          <div class="flex items-center mb-3">
+            {% if review.photo %}
+            <img src="{{ review.photo.url }}" alt="{{ review.full_name }}" class="w-10 h-10 rounded-full object-cover mr-3">
+            {% else %}
+            <div class="w-10 h-10 bg-{{ review.color }}-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+              {{ review.initials }}
+            </div>
+            {% endif %}
+            <div>
+              <h4 class="font-semibold text-gray-800 text-sm">{{ review.full_name }}</h4>
+              <p class="text-xs text-gray-500">{{ review.user_type|default:"CODM Player" }}</p>
+            </div>
+          </div>
+          <div class="star-rating flex mb-3">
+            {% for i in "12345" %}
+              {% if forloop.counter <= review.rating %}
+                <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+              {% else %}
+                <i class="fa-regular fa-star text-yellow-400 text-sm"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <p class="text-gray-600 text-sm">"{{ review.comment }}"</p>
+        </div>
+        {% empty %}
+        <!-- Default reviews if no reviews exist -->
+        <div class="review-card bg-white rounded-xl shadow-md p-5 min-w-[280px] max-w-[300px]">
+          <div class="flex items-center mb-3">
+            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+              JD
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 text-sm">John Doe</h4>
+              <p class="text-xs text-gray-500">CODM Player</p>
+            </div>
+          </div>
+          <div class="star-rating flex mb-3">
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+            <i class="fa-solid fa-star text-yellow-400 text-sm"></i>
+          </div>
+          <p class="text-gray-600 text-sm">"Best accounts! Got my dream skin at a great price."</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Leave Review Button -->
+    <div class="flex justify-center mt-10">
+      <button id="openReviewModal" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 shadow-md">
+        Leave Us a Review
+      </button>
+    </div>
+  </div>
+
+
+
+
+
+
+<!-- Review Modal -->
+<div id="reviewModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-2xl font-bold text-gray-800">Leave a Review</h3>
+      <button id="closeReviewModal" class="text-gray-500 hover:text-gray-700">
+        <i class="fa-solid fa-times text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- Django Form -->
+    <form method="POST" action="{% url 'submit_review' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <!-- Photo Upload -->
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Add Photo (Optional)</label>
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer" onclick="document.getElementById('id_photo').click()">
+          <i class="fa-solid fa-cloud-arrow-up text-gray-400 text-2xl mb-2"></i>
+          <p class="text-gray-500 text-sm">Click to upload or drag and drop</p>
+          <input type="file" class="hidden" id="id_photo" name="photo">
+        </div>
+      </div>
+      
+      <!-- Full Name -->
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Full Name</label>
+        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-black" 
+               name="full_name" required>
+      </div>
+
+      <!-- Add this to your review form -->
+<div class="mb-4">
+  <label class="block text-gray-700 mb-2">You are a...</label>
+  <select name="user_type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-black">
+    <option value="">Select your type</option>
+    <option value="CODM Player">CODM Player</option>
+    <option value="Gaming Enthusiast">Gaming Enthusiast</option>
+    <option value="Professional Gamer">Professional Gamer</option>
+    <option value="Content Creator">Content Creator</option>
+    <option value="CODM Collector">CODM Collector</option>
+  </select>
+</div>
+      
+      <!-- Comment -->
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Your Review</label>
+        <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 text-black" 
+                  rows="3" name="comment" required></textarea>
+      </div>
+      
+      <!-- Star Rating -->
+      <div class="mb-6">
+        <label class="block text-gray-700 mb-2">Your Rating</label>
+        <div class="flex space-x-1">
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="1"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="2"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="3"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="4"></i>
+          <i class="fa-regular fa-star text-2xl text-yellow-400 cursor-pointer rating-star" data-value="5"></i>
+        </div>
+        <input type="hidden" id="ratingValue" name="rating" value="0" required>
+      </div>
+      
+      <!-- Submit Button -->
+      <button type="submit" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+        Submit Review
+      </button>
+    </form>
+  </div>
+</div>
+</div>
+
+<!-- Simplified JavaScript (only for UI interactions) -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById('reviewModal');
+    const openButton = document.getElementById('openReviewModal');
+    const closeButton = document.getElementById('closeReviewModal');
+    const stars = document.querySelectorAll('.rating-star');
+    const ratingInput = document.getElementById('ratingValue');
+    
+    // Open modal
+    openButton.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+    
+    // Close modal
+    closeButton.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+    
+    // Star rating functionality (UI only)
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const value = parseInt(star.getAttribute('data-value'));
+        ratingInput.value = value;
+        
+        stars.forEach((s, index) => {
+          if (index < value) {
+            s.classList.remove('fa-regular');
+            s.classList.add('fa-solid');
+          } else {
+            s.classList.remove('fa-solid');
+            s.classList.add('fa-regular');
+          }
+        });
+      });
+    });
+  });
+</script>
+
+<!-- Footer Section -->
+<footer class="bg-gray-900 text-white pt-16 pb-8">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <!-- Company Info -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-transparent mr-3">
+            <img src="{% static 'images/logo1.png' %}" alt="Cauxie Sales" class="w-full h-full object-contain">
+          </div>
+          <span class="text-2xl font-bold text-white">CAUXIE-SALES</span>
+        </div>
+        <p class="text-gray-400 mb-6 max-w-md">
+          Your trusted marketplace for Call of Duty: Mobile accounts, skins, and gaming accessories. 
+          We provide secure transactions and premium gaming experiences.
+        </p>
+        <div class="flex space-x-4">
+          <a href="https://wa.me/+2347015902747" target="_blank" class="bg-green-500 hover:bg-green-600 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp" class="w-6 h-6">
+          </a>
+          <a href="https://facebook.com/cauxiesales" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/facebook.png' %}" alt="Facebook" class="w-6 h-6">
+          </a>
+          <a href="https://instagram.com/cauxiesales" target="_blank" class="bg-pink-600 hover:bg-pink-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/instagram.png' %}" alt="Instagram" class="w-6 h-6">
+          </a>
+          <a href="https://twitter.com/cauxiesales" target="_blank" class="bg-blue-400 hover:bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/x.png' %}" alt="Twitter" class="w-6 h-6">
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+        <ul class="space-y-3">
+         <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+          <li><a href="{% url 'shop' %}" class="text-gray-400 hover:text-white transition duration-300">Shop</a></li>
+          <li><a href="{% url 'about' %}" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+          <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+          <li><a href="{% url 'privacy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a></li>
+          <li><a href="{% url 'terms' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a></li>
+        </ul>
+      </div>
+
+       <!-- Contact Info -->
+      <div id="contact">
+        <h3 class="text-lg font-semibold mb-6">Contact Info</h3>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+              <i class="fa-solid fa-location-dot text-xs text-white"></i>
+            </div>
+            <p class="text-gray-400">Kogo 3, Bwari Abuja, Nigeria</p>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-phone text-xs text-white"></i>
+            </div>
+            <a href="tel:+23497015902747" class="text-gray-400 hover:text-white transition duration-300">+234 (701) 590-2747</a>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-envelope text-xs text-white"></i>
+            </div>
+            <a href="christianchinonso000@gmail.com" class="text-gray-400 hover:text-white transition duration-300"></a>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-clock text-xs text-white"></i>
+            </div>
+            <p class="text-gray-400">24/7 Customer Support</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Newsletter Subscription -->
+<div class="bg-gray-800 rounded-xl p-8 mb-12">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div>
+      <h3 class="text-xl font-bold mb-2">Stay Updated</h3>
+      <p class="text-gray-400">Subscribe to our newsletter for new product updates and exclusive offers.</p>
+    </div>
+    <div>
+      <form id="newsletterForm" method="POST" action="{% url 'subscribe_newsletter' %}" class="flex flex-col sm:flex-row gap-3">
+        {% csrf_token %}
+        <input type="email" 
+               name="email" 
+               placeholder="Enter your email" 
+               class="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
+               required>
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300 whitespace-nowrap">
+          Subscribe
+        </button>
+      </form>
+      <div id="subscriptionMessage" class="mt-2 text-sm"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    const subscriptionMessage = document.getElementById('subscriptionMessage');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Subscribing...';
+            submitButton.disabled = true;
+            subscriptionMessage.textContent = '';
+            subscriptionMessage.className = 'mt-2 text-sm';
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    subscriptionMessage.textContent = data.message;
+                    subscriptionMessage.className = 'mt-2 text-sm text-green-400';
+                    newsletterForm.reset();
+                } else {
+                    subscriptionMessage.textContent = data.message || 'An error occurred. Please try again.';
+                    subscriptionMessage.className = 'mt-2 text-sm text-red-400';
+                    
+                    // Show specific field errors if available
+                    if (data.errors && data.errors.email) {
+                        subscriptionMessage.textContent = data.errors.email[0];
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                subscriptionMessage.textContent = 'An error occurred. Please try again.';
+                subscriptionMessage.className = 'mt-2 text-sm text-red-400';
+            })
+            .finally(() => {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            });
+        });
+    }
+});
+</script>
+
+    <!-- Payment Methods -->
+    <div class="text-center mb-8">
+      <h4 class="text-gray-400 mb-4">We Accept</h4>
+      <div class="flex justify-center items-center space-x-4 flex-wrap">
+       
+        <img src="{% static 'images/ethereum.png' %}" alt="Etheruem" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/tether.png' %}" alt="Usdt" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/btc.png' %}" alt="Bitcoin" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/bt.png' %}" alt="Bank Transfer" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-gray-800 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">
+          © 2025 Cauxie Sales. All rights reserved.
+        </p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</footer>
+
+<script>
+  // Hide skeleton loader when page is fully loaded
+  window.addEventListener('load', function() {
+    const skeletonLoader = document.getElementById('skeleton-loader');
+    if (skeletonLoader) {
+      skeletonLoader.style.opacity = '0';
+      setTimeout(function() {
+        skeletonLoader.style.display = 'none';
+      }, 500); // Match the transition duration
+    }
+  });
+  
+  // If page takes too long to load, hide skeleton after 5 seconds
+  setTimeout(function() {
+    const skeletonLoader = document.getElementById('skeleton-loader');
+    if (skeletonLoader && skeletonLoader.style.display !== 'none') {
+      skeletonLoader.style.opacity = '0';
+      setTimeout(function() {
+        skeletonLoader.style.display = 'none';
+      }, 500);
+    }
+  }, 5000);
+</script>
+
+</body>
+</html>

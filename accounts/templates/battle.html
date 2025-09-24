@@ -1,0 +1,757 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cauxie Sales - CODM Battles</title>
+  <!-- Tailwind CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <style>
+    /* Skeleton Loading Styles */
+    .skeleton {
+      background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: 4px;
+    }
+    
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+    
+    .skeleton-circle {
+      border-radius: 50%;
+    }
+    
+    #skeleton-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .skeleton-logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+    
+    .skeleton-text {
+      height: 20px;
+      margin-bottom: 10px;
+      width: 200px;
+    }
+    
+    .skeleton-battle-card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    
+    /* Existing styles */
+    .menu-item {
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .menu-item:hover {
+      transform: translateX(5px);
+      color: white;
+    }
+    
+    /* Fix for mobile menu visibility */
+    nav {
+      position: relative;
+      z-index: 40;
+    }
+    
+    #mobile-menu {
+      z-index: 50;
+      transform: translateZ(0); /* Force hardware acceleration */
+    }
+    
+    /* Ensure the video doesn't cover the dropdown */
+    video {
+      z-index: 1;
+    }
+    
+    /* Navbar content should be above video */
+    .relative.z-10 {
+      z-index: 20;
+    }
+    
+    /* Battle page specific styles */
+    .battle-card {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .battle-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(167, 139, 250, 0.2);
+    }
+    
+    .gradient-text {
+      background: linear-gradient(90deg, #a78bfa, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .countdown-box {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(167, 139, 250, 0.5);
+    }
+    
+    .prize-card {
+      background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(40, 40, 40, 0.8));
+      border: 1px solid rgba(167, 139, 250, 0.2);
+    }
+    
+    .rule-item {
+      background: rgba(30, 30, 30, 0.7);
+      border-left: 3px solid #a78bfa;
+    }
+    
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #a78bfa, #ec4899);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+   <style>
+  body {
+      margin: 0;
+      min-height: 100vh;
+  }
+
+  /* Create a pseudo-element for the background image with extra padding */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; 
+    left: 0;
+    right: 0;
+    /* Calculate height to include the black card section plus padding */
+    height: calc(100% + 100px); /* Adjust the 100px value as needed */
+    background-image: url("{% static 'images/bg2.png' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+  }
+</style>
+ 
+</head>
+<body class="bg-black text-white" {% if tournament %}data-tournament-date="{{ tournament.start_date|date:'c' }}"{% endif %}>
+
+ <!-- Skeleton Loading Screen -->
+<div id="skeleton-loader">
+  <div class="skeleton skeleton-circle skeleton-logo"></div>
+  <div class="skeleton skeleton-text"></div>
+  <div class="skeleton skeleton-text" style="width: 150px; margin-top: 20px;"></div>
+  
+  <div class="max-w-6xl mx-auto px-6 mt-12 w-full">
+    <!-- Skeleton Hero Section -->
+    <div class="skeleton-battle-card" style="height: 300px; margin-bottom: 30px;">
+      <div class="skeleton" style="height: 40px; width: 60%; margin: 20px auto;"></div>
+      <div class="skeleton" style="height: 24px; width: 80%; margin: 15px auto;"></div>
+      <div class="skeleton" style="height: 80px; width: 90%; margin: 30px auto; border-radius: 12px;"></div>
+      <div class="skeleton" style="height: 50px; width: 200px; margin: 20px auto; border-radius: 25px;"></div>
+    </div>
+    
+    <!-- Skeleton Prize Pool Section -->
+    <div class="skeleton-battle-card" style="height: 400px; margin-bottom: 30px;">
+      <div class="skeleton" style="height: 40px; width: 50%; margin: 20px auto;"></div>
+      <div class="skeleton" style="height: 60px; width: 40%; margin: 15px auto; border-radius: 12px;"></div>
+      <div class="grid grid-cols-3 gap-4 mt-8">
+        <div class="skeleton" style="height: 180px; border-radius: 8px;"></div>
+        <div class="skeleton" style="height: 180px; border-radius: 8px;"></div>
+        <div class="skeleton" style="height: 180px; border-radius: 8px;"></div>
+      </div>
+    </div>
+    
+    <!-- Skeleton Registration Section -->
+    <div class="grid grid-cols-2 gap-6">
+      <div class="skeleton-battle-card" style="height: 350px;"></div>
+      <div class="skeleton-battle-card" style="height: 350px;"></div>
+    </div>
+  </div>
+</div>
+
+ <!-- Navbar -->
+<nav class="relative bg-black rounded-full shadow-lg w-[95%] max-w-6xl mx-auto mt-6">
+  
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline
+         class="absolute inset-0 w-full h-full object-cover rounded-full z-0 opacity-70 pointer-events-none">
+    <source src="{% static 'images/navbarbg.mp4' %}" type="video/mp4">
+  </video>
+
+  <!-- Navbar Content -->
+  <div class="relative z-20 flex justify-between items-center px-6 py-3">
+    <!-- Logo + text -->
+    <div class="flex items-center">
+      <div id="logo" class="w-12 h-12 bg-transparent mr-2">
+        <img src="{% static 'images/logo1.png' %}" alt="logo" class="w-full h-full object-contain">
+      </div>
+      <span class="text-lg font-semibold tracking-wide text-white">CAUXIE-SALES</span>
+    </div>
+
+   <!-- Desktop Menu -->
+<ul class="hidden md:flex space-x-6 text-sm items-center">
+  <li>
+    <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Home</a>
+  </li>
+  <li>
+    <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Shop</a>
+  </li>
+  <li>
+    <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
+      <i class="fa-solid fa-fire text-red-500"></i> Battle
+    </a>
+  </li>
+  <li>
+    <a href="#contact" class="text-gray-400 hover:text-white font-semibold transition duration-300">Contact Us</a>
+  </li>
+  <li>
+     <a href="{% url 'about' %}" class="text-gray-400 hover:text-white font-semibold flex items-center transition duration-300">
+      <i class="fas fa-info-circle text-base leading-none"></i>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'request' %}" class="bg-purple-500 text-black px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-[#d000ff] hover:text-white transition duration-300">
+      Make Request <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+    </a>
+  </li>
+</ul>
+
+
+    <!-- Mobile Toggle -->
+    <div class="md:hidden flex items-center">
+      <button id="mobile-menu-toggle" class="text-white text-2xl focus:outline-none">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Dropdown placed OUTSIDE nav -->
+<div id="mobile-menu" 
+     class="hidden absolute left-0 top-[90px] w-full bg-black md:hidden px-6 py-6 flex flex-col items-center gap-6 text-base z-50 shadow-lg rounded-xl border border-purple-900">
+
+  <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold text-center">Home</a>
+  <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold text-center">Shop</a>
+  
+   <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
+      <i class="fa-solid fa-fire text-red-500"></i> Battle
+    </a>
+  
+  <a href="#contact" class="text-gray-400 hover:text-white font-semibold text-center">Contact Us</a>
+  
+  <a href="{% url 'request' %}" class="bg-purple-500 text-black px-6 py-3 rounded-full flex items-center gap-2 justify-center text-sm font-semibold shadow-md hover:bg-[#d000ff] hover:text-white transition mt-2">
+    Make Requests <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+  </a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleButton = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (toggleButton && mobileMenu) {
+        toggleButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+          
+          // Change icon when menu is open/closed
+          const icon = toggleButton.querySelector('i');
+          if (mobileMenu.classList.contains('hidden')) {
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+          } else {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-xmark');
+          }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          const isClickInsideNav = event.target.closest('nav');
+          const isToggleButton = event.target.closest('#mobile-menu-toggle');
+          
+          if (!isClickInsideNav && !mobileMenu.classList.contains('hidden') && !isToggleButton) {
+            mobileMenu.classList.add('hidden');
+            const icon = toggleButton.querySelector('i');
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+          }
+        });
+      }
+    });
+  </script>
+
+<!-- Battle Page Content -->
+<main class="max-w-6xl mx-auto px-4 py-10">
+  <!-- Hero Section -->
+  <section class="text-center mb-16 mt-8">
+    <h1 class="text-4xl md:text-6xl font-bold mb-6">CODM <span class="gradient-text">BATTLE ARENA</span></h1>
+    <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+      Join the ultimate Call of Duty Mobile tournament. Test your skills, compete against the best, and win amazing prizes!
+    </p>
+    
+    <!-- Upcoming Battle Countdown -->
+    <div class="max-w-2xl mx-auto battle-card p-6 mb-10">
+      <h2 class="text-2xl font-bold mb-4">Next Battle Starts In:</h2>
+      {% if tournament %}
+      <div class="flex justify-center space-x-4" id="countdown">
+        <div class="countdown-box p-3 rounded-lg">
+          <div class="text-3xl font-bold" id="days">00</div>
+          <div class="text-sm">Days</div>
+        </div>
+        <div class="countdown-box p-3 rounded-lg">
+          <div class="text-3xl font-bold" id="hours">00</div>
+          <div class="text-sm">Hours</div>
+        </div>
+        <div class="countdown-box p-3 rounded-lg">
+          <div class="text-3xl font-bold" id="minutes">00</div>
+          <div class="text-sm">Minutes</div>
+        </div>
+        <div class="countdown-box p-3 rounded-lg">
+          <div class="text-3xl font-bold" id="seconds">00</div>
+          <div class="text-sm">Seconds</div>
+        </div>
+      </div>
+      {% else %}
+      <p class="text-gray-400 py-8">No upcoming tournaments scheduled. Check back later!</p>
+      {% endif %}
+      
+      {% if tournament %}
+      <div class="mt-8">
+        <a href="#register" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-flex items-center">
+          Register Now <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if tournament %}
+  <!-- Prize Pool Section -->
+  <section class="mb-20">
+    <h2 class="text-3xl font-bold text-center mb-12">Tournament <span class="gradient-text">Prize Pool</span></h2>
+    
+    <div class="battle-card p-8">
+      <div class="text-center mb-10">
+        <h3 class="text-2xl font-bold mb-2">Total Prize Pool</h3>
+        <div class="text-4xl md:text-5xl font-bold gradient-text">${{ tournament.total_prize_pool }}+</div>
+        <p class="text-gray-400 mt-2">Plus in-game items and exclusive rewards</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-6">
+        {% for prize in prizes %}
+        <div class="prize-card p-6 text-center {% if forloop.first %}transform scale-105 relative z-10{% endif %}">
+          <div class="w-16 h-16 mx-auto mb-4 
+            {% if forloop.first %}bg-yellow-500
+            {% elif forloop.counter == 2 %}bg-gray-400
+            {% elif forloop.counter == 3 %}bg-amber-700
+            {% else %}bg-purple-600{% endif %} 
+            rounded-full flex items-center justify-center">
+            <span class="text-2xl font-bold">{{ prize.position }}</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">
+            {% if forloop.first %}First Place
+            {% elif forloop.counter == 2 %}Second Place
+            {% elif forloop.counter == 3 %}Third Place
+            {% else %}{{ prize.position }}th Place{% endif %}
+          </h3>
+          <div class="text-2xl font-bold 
+            {% if forloop.first %}text-yellow-400
+            {% elif forloop.counter == 2 %}text-gray-300
+            {% elif forloop.counter == 3 %}text-amber-500
+            {% else %}text-purple-400{% endif %} 
+            mb-2">${{ prize.amount }}</div>
+          <div class="text-gray-300">{{ prize.description }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Entry Fee & Registration -->
+  <section class="mb-20" id="register">
+    <h2 class="text-3xl font-bold text-center mb-12">Entry Fee & <span class="gradient-text">Registration</span></h2>
+    
+    <div class="grid md:grid-cols-2 gap-10">
+      <div class="battle-card p-8">
+        <h3 class="text-2xl font-bold mb-6">Tournament Entry</h3>
+        
+        <div class="mb-6">
+          <h4 class="text-xl font-semibold mb-3">Standard Entry Fee</h4>
+          <div class="text-3xl font-bold gradient-text">${{ tournament.individual_entry_fee }}</div>
+          <p class="text-gray-400 mt-2">Per player</p>
+        </div>
+        
+        <div class="mb-6">
+          <h4 class="text-xl font-semibold mb-3">Squad Registration (4 players)</h4>
+          <div class="text-3xl font-bold gradient-text">${{ tournament.team_entry_fee }}</div>
+          <p class="text-gray-400 mt-2">Save when registering as a team</p>
+        </div>
+        
+        <!-- ... rest of payment methods ... -->
+      </div>
+      
+      <div class="battle-card p-8">
+        <h3 class="text-2xl font-bold mb-6">Tournament Rules</h3>
+        
+        <div class="space-y-4">
+          {{ tournament.rules|linebreaks }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tournament Structure -->
+  <section class="mb-20">
+    <h2 class="text-3xl font-bold text-center mb-12">Tournament <span class="gradient-text">Structure</span></h2>
+    
+    <div class="battle-card p-8">
+      <div class="text-center mb-10">
+        {{ tournament.structure|linebreaks }}
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-6 mt-10">
+        <div>
+          <h4 class="text-xl font-semibold mb-4">Match Rules</h4>
+          <ul class="space-y-3">
+            <li class="flex justify-between">
+              <span class="text-gray-400">Time Limit:</span>
+              <span class="font-semibold">{{ tournament.time_limit }} minutes</span>
+            </li>
+            <li class="flex justify-between">
+              <span class="text-gray-400">Allowed Maps:</span>
+              <span class="font-semibold">{{ tournament.allowed_maps }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span class="text-gray-400">Restricted Weapons:</span>
+              <span class="font-semibold">{{ tournament.restricted_weapons }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <script>
+  // Hide skeleton loader when page is fully loaded
+  window.addEventListener('load', function() {
+    const skeletonLoader = document.getElementById('skeleton-loader');
+    if (skeletonLoader) {
+      skeletonLoader.style.opacity = '0';
+      setTimeout(function() {
+        skeletonLoader.style.display = 'none';
+      }, 500); // Match the transition duration
+    }
+  });
+  
+  // If page takes too long to load, hide skeleton after 5 seconds
+  setTimeout(function() {
+    const skeletonLoader = document.getElementById('skeleton-loader');
+    if (skeletonLoader && skeletonLoader.style.display !== 'none') {
+      skeletonLoader.style.opacity = '0';
+      setTimeout(function() {
+        skeletonLoader.style.display = 'none';
+      }, 500);
+    }
+  }, 5000);
+
+  // Countdown timer
+  function updateCountdown() {
+    // Get the tournament date from a data attribute or use a default
+    const tournamentDate = document.body.getAttribute('data-tournament-date');
+    let targetDate;
+    
+    if (tournamentDate) {
+      targetDate = new Date(tournamentDate);
+    } else {
+      // Default to 7 days from now if no tournament
+      targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 7);
+    }
+    
+    const now = new Date();
+    const difference = targetDate - now;
+    
+    // Prevent negative values
+    if (difference <= 0) {
+      document.getElementById('countdown').innerHTML = '<p class="text-xl font-bold">Tournament has started!</p>';
+      return;
+    }
+    
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+    
+    document.getElementById('days').innerText = days.toString().padStart(2, '0');
+    document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+    document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+  }
+
+  // Initial call
+  updateCountdown();
+
+  // Update every second
+  setInterval(updateCountdown, 1000);
+
+  // Mobile menu functionality
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleButton = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (toggleButton && mobileMenu) {
+      toggleButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+        
+        // Change icon when menu is open/closed
+        const icon = toggleButton.querySelector('i');
+        if (mobileMenu.classList.contains('hidden')) {
+          icon.classList.remove('fa-xmark');
+          icon.classList.add('fa-bars');
+        } else {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-xmark');
+        }
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const isClickInsideNav = event.target.closest('nav');
+        const isToggleButton = event.target.closest('#mobile-menu-toggle');
+        
+        if (!isClickInsideNav && !mobileMenu.classList.contains('hidden') && !isToggleButton) {
+          mobileMenu.classList.add('hidden');
+          const icon = toggleButton.querySelector('i');
+          icon.classList.remove('fa-xmark');
+          icon.classList.add('fa-bars');
+        }
+      });
+    }
+  });
+</script>
+  <!-- ... rest of the template ... -->
+</main>
+
+<!-- Footer Section -->
+<footer class="bg-gray-900 text-white pt-16 pb-8">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <!-- Company Info -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-transparent mr-3">
+            <img src="{% static 'images/logo1.png' %}" alt="Cauxie Sales" class="w-full h-full object-contain">
+          </div>
+          <span class="text-2xl font-bold text-white">CAUXIE-SALES</span>
+        </div>
+        <p class="text-gray-400 mb-6 max-w-md">
+          Your trusted marketplace for Call of Duty: Mobile accounts, skins, and gaming accessories. 
+          We provide secure transactions and premium gaming experiences.
+        </p>
+        <div class="flex space-x-4">
+          <a href="https://wa.me/+2347015902747" target="_blank" class="bg-green-500 hover:bg-green-600 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp" class="w-6 h-6">
+          </a>
+          <a href="https://facebook.com/cauxiesales" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/facebook.png' %}" alt="Facebook" class="w-6 h-6">
+          </a>
+          <a href="https://instagram.com/cauxiesales" target="_blank" class="bg-pink-600 hover:bg-pink-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/instagram.png' %}" alt="Instagram" class="w-6 h-6">
+          </a>
+          <a href="https://twitter.com/cauxiesales" target="_blank" class="bg-blue-400 hover:bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/x.png' %}" alt="Twitter" class="w-6 h-6">
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+        <ul class="space-y-3">
+          <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+          <li><a href="{% url 'shop' %}" class="text-gray-400 hover:text-white transition duration-300">Shop</a></li>
+          <li><a href="{% url 'about' %}" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+          <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+          <li><a href="{% url 'privacy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a></li>
+          <li><a href="{% url 'terms' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div id="contact">
+        <h3 class="text-lg font-semibold mb-6">Contact Info</h3>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+              <i class="fa-solid fa-location-dot text-xs text-white"></i>
+            </div>
+            <p class="text-gray-400">Kogo 3, Bwari Abuja, Nigeria</p>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-phone text-xs text-white"></i>
+            </div>
+            <a href="tel:+23497015902747" class="text-gray-400 hover:text-white transition duration-300">+234 (701) 590-2747</a>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-envelope text-xs text-white"></i>
+            </div>
+            <a href="christianchinonso000@gmail.com" class="text-gray-400 hover:text-white transition duration-300"></a>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-clock text-xs text-white"></i>
+            </div>
+            <p class="text-gray-400">24/7 Customer Support</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <!-- Newsletter Subscription -->
+<div class="bg-gray-800 rounded-xl p-8 mb-12">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div>
+      <h3 class="text-xl font-bold mb-2">Stay Updated</h3>
+      <p class="text-gray-400">Subscribe to our newsletter for new product updates and exclusive offers.</p>
+    </div>
+    <div>
+      <form id="newsletterForm" method="POST" action="{% url 'subscribe_newsletter' %}" class="flex flex-col sm:flex-row gap-3">
+        {% csrf_token %}
+        <input type="email" 
+               name="email" 
+               placeholder="Enter your email" 
+               class="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
+               required>
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300 whitespace-nowrap">
+          Subscribe
+        </button>
+      </form>
+      <div id="subscriptionMessage" class="mt-2 text-sm"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    const subscriptionMessage = document.getElementById('subscriptionMessage');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Subscribing...';
+            submitButton.disabled = true;
+            subscriptionMessage.textContent = '';
+            subscriptionMessage.className = 'mt-2 text-sm';
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    subscriptionMessage.textContent = data.message;
+                    subscriptionMessage.className = 'mt-2 text-sm text-green-400';
+                    newsletterForm.reset();
+                } else {
+                    subscriptionMessage.textContent = data.message || 'An error occurred. Please try again.';
+                    subscriptionMessage.className = 'mt-2 text-sm text-red-400';
+                    
+                    // Show specific field errors if available
+                    if (data.errors && data.errors.email) {
+                        subscriptionMessage.textContent = data.errors.email[0];
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                subscriptionMessage.textContent = 'An error occurred. Please try again.';
+                subscriptionMessage.className = 'mt-2 text-sm text-red-400';
+            })
+            .finally(() => {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            });
+        });
+    }
+});
+</script>
+
+    <!-- Payment Methods -->
+    <div class="text-center mb-8">
+      <h4 class="text-gray-400 mb-4">We Accept</h4>
+      <div class="flex justify-center items-center space-x-4 flex-wrap">
+       
+        <img src="{% static 'images/ethereum.png' %}" alt="Etheruem" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/tether.png' %}" alt="Usdt" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/btc.png' %}" alt="Bitcoin" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/bt.png' %}" alt="Bank Transfer" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-gray-800 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">
+          © 2025 Cauxie Sales. All rights reserved.
+        </p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</footer>
+
+
+
+</body>
+</html>

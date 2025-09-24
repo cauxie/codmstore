@@ -1,0 +1,659 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cauxie Sales - Account Requests</title>
+  <!-- Tailwind CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <style>
+    .menu-item {
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .menu-item:hover {
+      transform: translateX(5px);
+      color: white;
+    }
+    
+    /* Fix for mobile menu visibility */
+    nav {
+      position: relative;
+      z-index: 40;
+    }
+    
+    #mobile-menu {
+      z-index: 50;
+      transform: translateZ(0);
+    }
+    
+    /* Ensure the video doesn't cover the dropdown */
+    video {
+      z-index: 1;
+    }
+    
+    /* Navbar content should be above video */
+    .relative.z-10 {
+      z-index: 20;
+    }
+    
+    /* Form styles */
+    .form-container {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      border-radius: 1rem;
+    }
+    
+    .input-field {
+      background: rgba(30, 30, 30, 0.7);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .input-field:focus {
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+    }
+    
+    .submit-btn {
+      background: linear-gradient(90deg, #a78bfa, #ec4899);
+      transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(167, 139, 250, 0.4);
+    }
+    
+    .upload-area {
+      border: 2px dashed rgba(167, 139, 250, 0.5);
+      transition: all 0.3s ease;
+    }
+    
+    .upload-area:hover {
+      border-color: #a78bfa;
+      background: rgba(30, 30, 30, 0.5);
+    }
+    
+    .preview-image {
+      max-height: 200px;
+      object-fit: contain;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(167, 139, 250, 0.9);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+  <style>
+  body {
+      margin: 0;
+      min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; 
+    left: 0;
+    right: 0;
+    height: calc(100% + 100px);
+    background-image: url("{% static 'images/bg2.png' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+  }
+</style>
+</head>
+<body class="bg-black text-white">
+
+ <!-- Navbar -->
+<nav class="relative bg-black rounded-full shadow-lg w-[95%] max-w-6xl mx-auto mt-6">
+  
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline
+         class="absolute inset-0 w-full h-full object-cover rounded-full z-0 opacity-70 pointer-events-none">
+    <source src="{% static 'images/navbarbg.mp4' %}" type="video/mp4">
+  </video>
+
+  <!-- Navbar Content -->
+  <div class="relative z-20 flex justify-between items-center px-6 py-3">
+    <!-- Logo + text -->
+    <div class="flex items-center">
+      <div id="logo" class="w-12 h-12 bg-transparent mr-2">
+        <img src="{% static 'images/logo1.png' %}" alt="logo" class="w-full h-full object-contain">
+      </div>
+      <span class="text-lg font-semibold tracking-wide text-white">CAUXIE-SALES</span>
+    </div>
+
+   <!-- Desktop Menu -->
+<ul class="hidden md:flex space-x-6 text-sm items-center">
+  <li>
+    <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Home</a>
+  </li>
+  <li>
+    <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Shop</a>
+  </li>
+  <li>
+    <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
+      <i class="fa-solid fa-fire text-red-500"></i> Battle
+    </a>
+  </li>
+  <li>
+    <a href="#contact" class="text-gray-400 hover:text-white font-semibold transition duration-300">Contact Us</a>
+  </li>
+  <li>
+    <a href="{% url 'about' %}" class="text-gray-400 hover:text-white font-semibold flex items-center transition duration-300">
+      <i class="fas fa-info-circle text-base leading-none"></i>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'request' %}" class="bg-purple-500 text-black px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-[#d000ff] hover:text-white transition duration-300">
+      Make Request <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+    </a>
+  </li>
+</ul>
+
+    <!-- Mobile Toggle -->
+    <div class="md:hidden flex items-center">
+      <button id="mobile-menu-toggle" class="text-white text-2xl focus:outline-none">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Dropdown placed OUTSIDE nav -->
+<div id="mobile-menu" 
+     class="hidden absolute left-0 top-[90px] w-full bg-black md:hidden px-6 py-6 flex flex-col items-center gap-6 text-base z-50 shadow-lg rounded-xl border border-purple-900">
+
+  <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold text-center">Home</a>
+  <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold text-center">Shop</a>
+  
+   <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
+      <i class="fa-solid fa-fire text-red-500"></i> Battle
+    </a>
+  
+  <a href="#contact" class="text-gray-400 hover:text-white font-semibold text-center">Contact Us</a>
+  
+  <a href="{% url 'request' %}" class="bg-purple-500 text-black px-6 py-3 rounded-full flex items-center gap-2 justify-center text-sm font-semibold shadow-md hover:bg-[#d000ff] hover:text-white transition mt-2">
+    Make Requests <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+  </a>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast">
+  <div class="flex items-center">
+    <i class="fas fa-check-circle mr-2"></i>
+    <span id="toast-message">Operation completed successfully!</span>
+  </div>
+</div>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8 max-w-6xl">
+  <!-- Request Section -->
+  <section class="mb-16">
+    <h2 class="text-3xl font-bold text-center mb-2" style="background: linear-gradient(90deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Request An Account</h2>
+    <p class="text-gray-400 text-center mb-8">Tell us what type of account you're looking for and we'll find it for you</p>
+    
+    <div class="form-container p-6 md:p-8 max-w-2xl mx-auto">
+      <form id="requestForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
+            <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Enter your name" required>
+          </div>
+          
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">WhatsApp Number</label>
+            <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Your WhatsApp number" required>
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <label for="accountType" class="block text-sm font-medium text-gray-300 mb-2">Account Type</label>
+          <select id="accountType" name="accountType" class="w-full px-4 py-3 rounded-lg input-field" required>
+            <option value="" disabled selected>Select account type</option>
+            <option value="premium">Premium Account</option>
+            <option value="rare">Rare Skin Account</option>
+            <option value="legendary">Legendary Account</option>
+            <option value="mythic">Mythic Account</option>
+            <option value="bundle">Bundle Account</option>
+            <option value="other">Other (Specify in details)</option>
+          </select>
+        </div>
+        
+        <div class="mb-6">
+          <label for="budget" class="block text-sm font-medium text-gray-300 mb-2">Your Budget (USD)</label>
+          <input type="number" id="budget" name="budget" min="0" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Enter your budget" required>
+        </div>
+        
+        <div class="mb-6">
+          <label for="details" class="block text-sm font-medium text-gray-300 mb-2">Specific Details</label>
+          <textarea id="details" name="details" rows="4" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Describe what you're looking for in detail (specific skins, items, level, etc.)" required></textarea>
+        </div>
+        
+        <button type="submit" class="w-full py-3 px-6 rounded-lg font-semibold submit-btn flex items-center justify-center">
+          <i class="fab fa-whatsapp mr-2 text-lg"></i> Submit via WhatsApp
+        </button>
+      </form>
+    </div>
+  </section>
+  
+  <!-- Selling Section -->
+  <section>
+    <h2 class="text-3xl font-bold text-center mb-2" style="background: linear-gradient(90deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sell Your Account</h2>
+    <p class="text-gray-400 text-center mb-8">Post details of the account you want to sell with images/videos</p>
+    
+    <div class="form-container p-6 md:p-8 max-w-4xl mx-auto">
+      <!-- Update the name attributes to match your view -->
+<form id="sellForm" method="POST" action="{% url 'request' %}" enctype="multipart/form-data">
+  {% csrf_token %}
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div>
+      <label for="sellerName" class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
+      <input type="text" id="sellerName" name="sellerName" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Enter your name" required>
+    </div>
+    
+    <div>
+      <label for="sellerContact" class="block text-sm font-medium text-gray-300 mb-2">Contact Info</label>
+      <input type="text" id="sellerContact" name="sellerContact" class="w-full px-4 py-3 rounded-lg input-field" placeholder="WhatsApp/Telegram/Email" required>
+    </div>
+  </div>
+  
+  <div class="mb-6">
+    <label for="accountTitle" class="block text-sm font-medium text-gray-300 mb-2">Account Title</label>
+    <input type="text" id="accountTitle" name="accountTitle" class="w-full px-4 py-3 rounded-lg input-field" placeholder="e.g., Mythic Account with Rare Skins" required>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div>
+      <label for="price" class="block text-sm font-medium text-gray-300 mb-2">Asking Price (USD)</label>
+      <input type="number" id="price" name="price" min="0" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Enter your price" required>
+    </div>
+    
+    <div>
+      <label for="accountLevel" class="block text-sm font-medium text-gray-300 mb-2">Account Level</label>
+      <input type="number" id="accountLevel" name="accountLevel" min="1" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Account level" required>
+    </div>
+  </div>
+  
+  <div class="mb-6">
+    <label for="accountDetails" class="block text-sm font-medium text-gray-300 mb-2">Account Details</label>
+    <textarea id="accountDetails" name="accountDetails" rows="4" class="w-full px-4 py-3 rounded-lg input-field" placeholder="Describe your account in detail (skins, items, stats, etc.)" required></textarea>
+  </div>
+  
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-300 mb-2">Upload Media</label>
+    <div class="upload-area border-dashed border-2 rounded-lg p-8 text-center cursor-pointer" id="dropZone">
+      <input type="file" id="mediaUpload" name="mediaUpload" class="hidden" multiple accept="image/*,video/*">
+      <!-- ... rest of your file upload HTML ... -->
+   
+            <i class="fas fa-cloud-upload-alt text-3xl text-purple-500 mb-3"></i>
+            <p class="text-gray-400">Drag & drop images or videos here</p>
+            <p class="text-gray-500 text-sm mt-1">or</p>
+            <label for="mediaUpload" class="inline-block mt-2 px-4 py-2 bg-purple-900 rounded-lg cursor-pointer hover:bg-purple-800 transition">Browse Files</label>
+            <p class="text-gray-500 text-xs mt-2">Maximum 5 files (images or videos)</p>
+          </div>
+    <div id="previewContainer" class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4 hidden"></div>
+  </div>
+  
+  <button type="submit" class="w-full py-3 px-6 rounded-lg font-semibold submit-btn">
+    Post Account for Sale
+  </button>
+</form>
+    </div>
+  </section>
+</main>
+
+  <!--- Footer Section -->
+<footer class="bg-gray-900 text-white pt-16 pb-8">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <!-- Company Info -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-transparent mr-3">
+            <img src="{% static 'images/logo1.png' %}" alt="Cauxie Sales" class="w-full h-full object-contain">
+          </div>
+          <span class="text-2xl font-bold text-white">CAUXIE-SALES</span>
+        </div>
+        <p class="text-gray-400 mb-6 max-w-md">
+          Your trusted marketplace for Call of Duty: Mobile accounts, skins, and gaming accessories. 
+          We provide secure transactions and premium gaming experiences.
+        </p>
+        <div class="flex space-x-4">
+          <a href="https://wa.me/+2347015902747" target="_blank" class="bg-green-500 hover:bg-green-600 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp" class="w-6 h-6">
+          </a>
+          <a href="https://facebook.com/cauxiesales" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/facebook.png' %}" alt="Facebook" class="w-6 h-6">
+          </a>
+          <a href="https://instagram.com/cauxiesales" target="_blank" class="bg-pink-600 hover:bg-pink-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/instagram.png' %}" alt="Instagram" class="w-6 h-6">
+          </a>
+          <a href="https://twitter.com/cauxiesales" target="_blank" class="bg-blue-400 hover:bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+            <img src="{% static 'images/x.png' %}" alt="Twitter" class="w-6 h-6">
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+        <ul class="space-y-3">
+          <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+          <li><a href="{% url 'shop' %}" class="text-gray-400 hover:text-white transition duration-300">Shop</a></li>
+          <li><a href="{% url 'about' %}" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+          <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+          <li><a href="{% url 'privacy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a></li>
+          <li><a href="{% url 'terms' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a></li>
+        </ul>
+      </div>
+
+   <!-- Contact Info -->
+      <div id="contact">
+        <h3 class="text-lg font-semibold mb-6">Contact Info</h3>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+              <i class="fa-solid fa-location-dot text-xs text-white"></i>
+            </div>
+            <p class="text-gray-400">Kogo 3, Bwari Abuja, Nigeria</p>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-phone text-xs text-white"></i>
+            </div>
+            <a href="tel:+23497015902747" class="text-gray-400 hover:text-white transition duration-300">+234 (701) 590-2747</a>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-envelope text-xs text-white"></i>
+            </div>
+            <a href="christianchinonso000@gmail.com" class="text-gray-400 hover:text-white transition duration-300"></a>
+          </div>
+          <div class="flex items-center">
+            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fa-solid fa-clock text-xs text-white"></i>
+            </div>
+            <p class="text-gray-400">24/7 Customer Support</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+       <!-- Newsletter Subscription -->
+<div class="bg-gray-800 rounded-xl p-8 mb-12">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div>
+      <h3 class="text-xl font-bold mb-2">Stay Updated</h3>
+      <p class="text-gray-400">Subscribe to our newsletter for new product updates and exclusive offers.</p>
+    </div>
+    <div>
+      <form id="newsletterForm" method="POST" action="{% url 'subscribe_newsletter' %}" class="flex flex-col sm:flex-row gap-3">
+        {% csrf_token %}
+        <input type="email" 
+               name="email" 
+               placeholder="Enter your email" 
+               class="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
+               required>
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300 whitespace-nowrap">
+          Subscribe
+        </button>
+      </form>
+      <div id="subscriptionMessage" class="mt-2 text-sm"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    const subscriptionMessage = document.getElementById('subscriptionMessage');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Subscribing...';
+            submitButton.disabled = true;
+            subscriptionMessage.textContent = '';
+            subscriptionMessage.className = 'mt-2 text-sm';
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    subscriptionMessage.textContent = data.message;
+                    subscriptionMessage.className = 'mt-2 text-sm text-green-400';
+                    newsletterForm.reset();
+                } else {
+                    subscriptionMessage.textContent = data.message || 'An error occurred. Please try again.';
+                    subscriptionMessage.className = 'mt-2 text-sm text-red-400';
+                    
+                    // Show specific field errors if available
+                    if (data.errors && data.errors.email) {
+                        subscriptionMessage.textContent = data.errors.email[0];
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                subscriptionMessage.textContent = 'An error occurred. Please try again.';
+                subscriptionMessage.className = 'mt-2 text-sm text-red-400';
+            })
+            .finally(() => {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            });
+        });
+    }
+});
+</script>
+
+    <!-- Payment Methods -->
+    <div class="text-center mb-8">
+      <h4 class="text-gray-400 mb-4">We Accept</h4>
+      <div class="flex justify-center items-center space-x-4 flex-wrap">
+       
+        <img src="{% static 'images/ethereum.png' %}" alt="Etheruem" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/tether.png' %}" alt="Usdt" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/btc.png' %}" alt="Bitcoin" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        <img src="{% static 'images/bt.png' %}" alt="Bank Transfer" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-gray-800 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">
+          © 2025 Cauxie Sales. All rights reserved.
+        </p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // Toast notification function
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    
+    toastMessage.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Request form submission to WhatsApp
+  document.getElementById('requestForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const accountType = document.getElementById('accountType').value;
+    const budget = document.getElementById('budget').value;
+    const details = document.getElementById('details').value;
+    
+    // Format the message
+    const message = `Hello! I would like to request an account with the following details:%0A%0A` +
+                    `*Name:* ${name}%0A` +
+                    `*Account Type:* ${accountType}%0A` +
+                    `*Budget:* $${budget}%0A` +
+                    `*Details:* ${details}%0A%0A` +
+                    `Please contact me regarding this request.`;
+    
+    // Open WhatsApp with pre-filled message
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+    
+    // Show success message
+    showToast('Your request has been submitted via WhatsApp!');
+    
+    // Reset form
+    this.reset();
+  });
+
+  // File upload preview functionality
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('mediaUpload');
+  const previewContainer = document.getElementById('previewContainer');
+  let uploadedFiles = [];
+
+  dropZone.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('border-purple-500', 'bg-gray-900');
+  });
+
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('border-purple-500', 'bg-gray-900');
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('border-purple-500', 'bg-gray-900');
+    
+    if (e.dataTransfer.files.length > 0) {
+      handleFiles(e.dataTransfer.files);
+    }
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+      handleFiles(fileInput.files);
+    }
+  });
+
+  function handleFiles(files) {
+    for (let i = 0; i < Math.min(files.length, 5 - uploadedFiles.length); i++) {
+      const file = files[i];
+      
+      if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+        uploadedFiles.push(file);
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const preview = document.createElement('div');
+          preview.className = 'relative';
+          
+          if (file.type.startsWith('image/')) {
+            preview.innerHTML = `
+              <img src="${e.target.result}" alt="Preview" class="w-full h-32 object-cover rounded-lg">
+              <button type="button" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs remove-btn">×</button>
+            `;
+          } else {
+            preview.innerHTML = `
+              <video class="w-full h-32 object-cover rounded-lg" controls>
+                <source src="${e.target.result}" type="${file.type}">
+              </video>
+              <button type="button" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs remove-btn">×</button>
+            `;
+          }
+          
+          previewContainer.appendChild(preview);
+          previewContainer.classList.remove('hidden');
+          
+          // Add event listener to remove button
+          preview.querySelector('.remove-btn').addEventListener('click', function() {
+            const index = uploadedFiles.indexOf(file);
+            if (index > -1) {
+              uploadedFiles.splice(index, 1);
+            }
+            preview.remove();
+            if (uploadedFiles.length === 0) {
+              previewContainer.classList.add('hidden');
+            }
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+  // Sell form submission - traditional form (no AJAX)
+document.getElementById('sellForm').addEventListener('submit', function(e) {
+  // Let the form submit traditionally
+  // Show loading state
+  const submitButton = this.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  
+  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Submitting...';
+  submitButton.disabled = true;
+  
+  // The form will submit normally and redirect back to the page
+  // Django messages will show the success message
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Cauxie Sales</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0f0f0f;
+      color: #fff;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #a78bfa, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .section-container {
+      max-width: 4xl;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .policy-section {
+      margin-bottom: 3rem;
+    }
+    .back-button {
+      transition: all 0.3s ease;
+    }
+    .back-button:hover {
+      transform: translateX(-5px);
+    }
+    .highlight-box {
+      background: linear-gradient(145deg, rgba(167, 139, 250, 0.1), rgba(236, 72, 153, 0.1));
+      border-left: 4px solid #a78bfa;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="bg-gray-800 py-4">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <div class="flex items-center">
+        <div class="w-10 h-10 bg-transparent mr-2">
+          <img src="https://via.placeholder.com/40" alt="logo" class="w-full h-full object-contain rounded-full">
+        </div>
+        <span class="text-lg font-semibold">CAUXIE-SALES</span>
+      </div>
+      <div class="flex items-center space-x-6">
+        <a href="{% url 'home' %}" class="text-gray-300 hover:text-white">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-12 max-w-4xl">
+    <!-- Back Button -->
+    <a href="{% url 'home' %}" class="inline-flex items-center text-purple-400 hover:text-purple-300 mb-8 back-button">
+      <i class="fas fa-arrow-left mr-2"></i> Back to Home
+    </a>
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">Privacy <span class="gradient-text">Policy</span></h1>
+      <p class="text-gray-400">Last Updated: <span id="current-date"></span></p>
+    </div>
+
+    <!-- Important Notice -->
+    <div class="highlight-box p-6 rounded-lg mb-8">
+      <div class="flex items-start">
+        <div class="mr-4 text-purple-400 text-xl">
+          <i class="fas fa-info-circle"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Important Notice</h3>
+          <p class="text-gray-300">
+            At Cauxie Sales, we value your privacy. We do not store any personal data from our customers. 
+            All transactions are handled directly through WhatsApp and Discord communications.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Introduction -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">1. Introduction</h2>
+      <p class="text-gray-300 mb-4">
+        Welcome to Cauxie Sales ("we," "our," or "us"). We are committed to protecting your privacy and ensuring you have a positive experience when using our services. This Privacy Policy explains our practices regarding your information.
+      </p>
+      <p class="text-gray-300">
+        Please read this policy carefully. By using our services, you agree to the terms outlined here.
+      </p>
+    </div>
+
+    <!-- Information Collection -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">2. Information We Collect</h2>
+      
+      <h3 class="text-xl font-medium mb-2 text-gray-300">Minimal Information</h3>
+      <p class="text-gray-300 mb-4">
+        We collect minimal information necessary to process your orders:
+      </p>
+      <ul class="list-disc list-inside text-gray-300 mb-6 pl-4">
+        <li>Email address (for order notifications only)</li>
+        <li>Communication history via WhatsApp or Discord</li>
+      </ul>
+      
+      <div class="bg-gray-700 p-4 rounded-lg mb-4">
+        <h4 class="font-semibold text-purple-300 mb-2">What We Don't Collect:</h4>
+        <ul class="list-check list-inside text-gray-300 space-y-1">
+          <li><i class="fas fa-check-circle text-green-400 mr-2"></i>We do not store personal data</li>
+          <li><i class="fas fa-check-circle text-green-400 mr-2"></i>We do not use payment processors that store your financial information</li>
+          <li><i class="fas fa-check-circle text-green-400 mr-2"></i>We do not use tracking tools like Google Analytics</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- How We Use Your Information -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">3. How We Use Your Information</h2>
+      <p class="text-gray-300 mb-4">
+        The limited information we collect is used exclusively for:
+      </p>
+      <ul class="list-disc list-inside text-gray-300 mb-4 pl-4">
+        <li>Processing and fulfilling your orders for game accounts</li>
+        <li>Sending order confirmations and notifications</li>
+        <li>Providing customer support via WhatsApp or Discord</li>
+        <li>Sending promotional messages (only with your consent)</li>
+      </ul>
+    </div>
+
+    <!-- Data Security -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">4. Data Security</h2>
+      <p class="text-gray-300 mb-4">
+        Since we do not store personal data, your information remains secure through these measures:
+      </p>
+      <ul class="list-disc list-inside text-gray-300 mb-4 pl-4">
+        <li>All transactions are handled through secure WhatsApp and Discord communications</li>
+        <li>No databases storing customer information</li>
+        <li>No retention of customer data beyond immediate transaction needs</li>
+      </ul>
+    </div>
+
+    <!-- Marketing Communications -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">5. Marketing Communications</h2>
+      <p class="text-gray-300 mb-4">
+        We may occasionally send marketing emails about new products, special offers, or other information we think you may find interesting.
+      </p>
+      
+      <div class="bg-gray-700 p-4 rounded-lg">
+        <h4 class="font-semibold text-purple-300 mb-2">Opting Out:</h4>
+        <p class="text-gray-300">
+          You can easily opt out of marketing communications at any time by messaging us on WhatsApp and requesting to be removed from our mailing list.
+        </p>
+      </div>
+    </div>
+
+    <!-- Third-Party Services -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">6. Third-Party Services</h2>
+      <p class="text-gray-300 mb-4">
+        We value your privacy and have intentionally limited our use of third-party services:
+      </p>
+      <ul class="list-disc list-inside text-gray-300 mb-4 pl-4">
+        <li>We do not use any third-party payment processors</li>
+        <li>We do not use analytics or tracking tools</li>
+        <li>We do not share your information with any third parties</li>
+      </ul>
+    </div>
+
+    <!-- Data Retention -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">7. Data Retention</h2>
+      <p class="text-gray-300">
+        We do not retain customer data. Once a transaction is completed, we do not store any personal information. 
+        Communication history on WhatsApp or Discord is subject to those platforms' privacy policies.
+      </p>
+    </div>
+
+    <!-- Changes to Policy -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">8. Changes to This Privacy Policy</h2>
+      <p class="text-gray-300 mb-4">
+        We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.
+      </p>
+      <p class="text-gray-300">
+        You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.
+      </p>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="policy-section bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4 text-purple-400">9. Contact Us</h2>
+      <p class="text-gray-300 mb-4">
+        If you have any questions or concerns about this Privacy Policy, please contact us through any of these channels:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="bg-gray-700 p-4 rounded-lg flex items-center">
+          <div class="bg-green-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+            <i class="fab fa-whatsapp text-white"></i>
+          </div>
+          <div>
+            <p class="font-semibold">WhatsApp</p>
+            <p class="text-gray-300">+234 701 590 2747</p>
+          </div>
+        </div>
+        <div class="bg-gray-700 p-4 rounded-lg flex items-center">
+          <div class="bg-indigo-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+            <i class="fab fa-discord text-white"></i>
+          </div>
+          <div>
+            <p class="font-semibold">Discord</p>
+            <p class="text-gray-300">cauxiesales</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 py-8 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p>© 2025 Cauxie-Sales. All rights reserved.</p>
+      <p class="text-gray-400 mt-2">Contact us: support@cauxie-sales.com</p>
+    </div>
+  </footer>
+
+  <script>
+    // Set current date in the privacy policy
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  </script>
+</body>
+</html>
