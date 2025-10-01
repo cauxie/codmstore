@@ -371,4 +371,31 @@ def subscribe_newsletter(request):
                     'errors': form.errors
                 })
     
-    return redirect('home')  # Redirect back to home page        
+    return redirect('home')  # Redirect back to home page  
+
+
+from django.http import HttpResponse
+from django.core.management import call_command
+from io import StringIO
+import os
+
+def create_superuser_view(request):
+    # Add a secret key for security
+    if request.GET.get('key') != 'your-secret-key-123':
+        return HttpResponse('Unauthorized', status=403)
+    
+    # Check if superuser already exists
+    from django.contrib.auth.models import User
+    if User.objects.filter(is_superuser=True).exists():
+        return HttpResponse('Superuser already exists')
+    
+    # Create superuser
+    try:
+        User.objects.create_superuser(
+            username='admin',
+            email='admin@example.com',
+            password='temp_password_123'
+        )
+        return HttpResponse('Superuser created successfully! Username: admin, Password: temp_password_123')
+    except Exception as e:
+        return HttpResponse(f'Error: {str(e)}')          
