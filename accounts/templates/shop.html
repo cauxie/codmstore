@@ -6,18 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cauxie Sales</title>
 
- <!-- ========== FAVICON SETUP ========== -->
-  <!-- Basic favicon for all browsers -->
+  <!-- ========== FAVICON SETUP ========== -->
   <link rel="shortcut icon" href="{% static 'images/logo1.png' %}" type="image/png">
   <link rel="icon" href="{% static 'images/logo1.png' %}" type="image/png">
-  
-  <!-- For Apple devices (iPhone, iPad) -->
   <link rel="apple-touch-icon" href="{% static 'images/logo1.png' %}">
-  
-  <!-- For Android devices -->
   <link rel="icon" sizes="192x192" href="{% static 'images/logo1.png' %}">
-  
-  <!-- Theme color for mobile browsers -->
   <meta name="theme-color" content="#a78bfa">
   <!-- ========== END FAVICON ========== -->
 
@@ -99,7 +92,7 @@
     
     #mobile-menu {
       z-index: 50;
-      transform: translateZ(0); /* Force hardware acceleration */
+      transform: translateZ(0);
     }
     
     /* Ensure the video doesn't cover the dropdown */
@@ -153,143 +146,708 @@
     .currency-active {
       color: white;
     }
-  </style>
-   <style>
-  body {
+
+    /* NEW: Image Slider Styles */
+    .product-media-container {
+      position: relative;
+      overflow: hidden;
+      height: 12rem;
+      background: #1f2937;
+    }
+
+    .product-media-slider {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      height: 100%;
+    }
+
+    .product-media-slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-media-slide img,
+    .product-media-slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slider-controls {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+
+    .slider-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .slider-dot.active {
+      background: #a78bfa;
+      transform: scale(1.2);
+    }
+
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .product-media-container:hover .slider-arrow {
+      opacity: 1;
+    }
+
+    .slider-arrow.prev {
+      left: 10px;
+    }
+
+    .slider-arrow.next {
+      right: 10px;
+    }
+
+    /* NEW: Modal for full-size image/video */
+    .media-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .media-modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+    }
+
+    .modal-content img,
+    .modal-content video {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .modal-nav.prev {
+      left: 20px;
+    }
+
+    .modal-nav.next {
+      right: 20px;
+    }
+
+    /* NEW: Price display styles */
+    .price-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .price-usd {
+      color: #a78bfa;
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+
+    .price-ngn {
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+
+    body {
       margin: 0;
       min-height: 100vh;
-  }
+    }
 
-  /* Create a pseudo-element for the background image with extra padding */
-  body::before {
-    content: '';
-    position: absolute;
-    top: 0; 
-    left: 0;
-    right: 0;
-    /* Calculate height to include the black card section plus padding */
-    height: calc(100% + 100px); /* Adjust the 100px value as needed */
-    background-image: url("{% static 'images/bg2.png' %}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1;
-  }
-</style>
- 
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; 
+      left: 0;
+      right: 0;
+      height: calc(100% + 100px);
+      background-image: url("{% static 'images/bg2.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+    }
+  </style>
 </head>
 <body class="bg-black text-white">
 
- <!-- Skeleton Loading Screen -->
-<div id="skeleton-loader">
-  <div class="skeleton skeleton-circle skeleton-logo"></div>
-  <div class="skeleton skeleton-text"></div>
-  <div class="skeleton skeleton-text" style="width: 150px; margin-top: 20px;"></div>
-  
-  <div class="max-w-6xl mx-auto px-6 mt-12 w-full">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <!-- Skeleton product cards -->
-      {% for i in "1234" %}
-      <div class="skeleton-product">
-        <div class="skeleton" style="height: 180px; width: 100%; margin-bottom: 15px; border-radius: 8px;"></div>
-        <div class="skeleton" style="height: 24px; width: 70%; margin-bottom: 10px;"></div>
-        <div class="skeleton" style="height: 16px; width: 90%; margin-bottom: 8px;"></div>
-        <div class="skeleton" style="height: 16px; width: 80%; margin-bottom: 15px;"></div>
-        <div class="skeleton" style="height: 20px; width: 40%; margin-bottom: 15px;"></div>
-        <div class="skeleton" style="height: 40px; width: 100%; border-radius: 8px;"></div>
+  <!-- Skeleton Loading Screen -->
+  <div id="skeleton-loader">
+    <div class="skeleton skeleton-circle skeleton-logo"></div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text" style="width: 150px; margin-top: 20px;"></div>
+    
+    <div class="max-w-6xl mx-auto px-6 mt-12 w-full">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {% for i in "1234" %}
+        <div class="skeleton-product">
+          <div class="skeleton" style="height: 180px; width: 100%; margin-bottom: 15px; border-radius: 8px;"></div>
+          <div class="skeleton" style="height: 24px; width: 70%; margin-bottom: 10px;"></div>
+          <div class="skeleton" style="height: 16px; width: 90%; margin-bottom: 8px;"></div>
+          <div class="skeleton" style="height: 16px; width: 80%; margin-bottom: 15px;"></div>
+          <div class="skeleton" style="height: 20px; width: 40%; margin-bottom: 15px;"></div>
+          <div class="skeleton" style="height: 40px; width: 100%; border-radius: 8px;"></div>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
   </div>
-</div>
 
- <!-- Navbar -->
-<nav class="relative bg-black rounded-full shadow-lg w-[95%] max-w-6xl mx-auto mt-6">
-  
-  <!-- Background Video -->
-  <video autoplay muted loop playsinline
-         class="absolute inset-0 w-full h-full object-cover rounded-full z-0 opacity-70 pointer-events-none">
-    <source src="{% static 'images/navbarbg.mp4' %}" type="video/mp4">
-  </video>
+  <!-- Navbar -->
+  <nav class="relative bg-black rounded-full shadow-lg w-[95%] max-w-6xl mx-auto mt-6">
+    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover rounded-full z-0 opacity-70 pointer-events-none">
+      <source src="{% static 'images/navbarbg.mp4' %}" type="video/mp4">
+    </video>
 
-  <!-- Navbar Content -->
-  <div class="relative z-20 flex justify-between items-center px-6 py-3">
-    <!-- Logo + text -->
-    <div class="flex items-center">
-      <div id="logo" class="w-12 h-12 bg-transparent mr-2">
-        <img src="{% static 'images/logo1.png' %}" alt="logo" class="w-full h-full object-contain">
+    <div class="relative z-20 flex justify-between items-center px-6 py-3">
+      <div class="flex items-center">
+        <div id="logo" class="w-12 h-12 bg-transparent mr-2">
+          <img src="{% static 'images/logo1.png' %}" alt="logo" class="w-full h-full object-contain">
+        </div>
+        <span class="text-lg font-semibold tracking-wide text-white">CAUXIE-SALES</span>
       </div>
-      <span class="text-lg font-semibold tracking-wide text-white">CAUXIE-SALES</span>
-    </div>
 
-   <!-- Desktop Menu -->
-<ul class="hidden md:flex space-x-6 text-sm items-center">
-  <li>
-    <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Home</a>
-  </li>
-  <li>
-    <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Shop</a>
-  </li>
-  <li>
+      <ul class="hidden md:flex space-x-6 text-sm items-center">
+        <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Home</a></li>
+        <li><a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold transition duration-300">Shop</a></li>
+        <li>
+          <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
+            <i class="fa-solid fa-fire text-red-500"></i> Battle
+          </a>
+        </li>
+        <li><a href="#contact" class="text-gray-400 hover:text-white font-semibold transition duration-300">Contact Us</a></li>
+        <li>
+          <a href="{% url 'about' %}" class="text-gray-400 hover:text-white font-semibold flex items-center transition duration-300">
+            <i class="fas fa-info-circle text-base leading-none"></i>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'request' %}" class="bg-purple-500 text-black px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-[#d000ff] hover:text-white transition duration-300">
+            Make Request <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </li>
+      </ul>
+
+      <div class="md:hidden flex items-center">
+        <button id="mobile-menu-toggle" class="text-white text-2xl focus:outline-none">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden absolute left-0 top-[90px] w-full bg-black md:hidden px-6 py-6 flex flex-col items-center gap-6 text-base z-50 shadow-lg rounded-xl border border-purple-900">
+    <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold text-center">Home</a>
+    <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold text-center">Shop</a>
     <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
       <i class="fa-solid fa-fire text-red-500"></i> Battle
     </a>
-  </li>
-  <li>
-    <a href="#contact" class="text-gray-400 hover:text-white font-semibold transition duration-300">Contact Us</a>
-  </li>
-  <li>
-     <a href="{% url 'about' %}" class="text-gray-400 hover:text-white font-semibold flex items-center transition duration-300">
-      <i class="fas fa-info-circle text-base leading-none"></i>
+    <a href="#contact" class="text-gray-400 hover:text-white font-semibold text-center">Contact Us</a>
+    <a href="{% url 'request' %}" class="bg-purple-500 text-black px-6 py-3 rounded-full flex items-center gap-2 justify-center text-sm font-semibold shadow-md hover:bg-[#d000ff] hover:text-white transition mt-2">
+      Make Requests <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
     </a>
-  </li>
-  <li>
-    <a href="{% url 'request' %}" class="bg-purple-500 text-black px-3 py-1 rounded-full text-sm flex items-center gap-1 hover:bg-[#d000ff] hover:text-white transition duration-300">
-      Make Request <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-    </a>
-  </li>
-</ul>
+  </div>
 
+  <!-- Media Modal -->
+  <div id="media-modal" class="media-modal">
+    <button class="modal-close">&times;</button>
+    <button class="modal-nav prev">&lt;</button>
+    <div class="modal-content">
+      <!-- Media will be inserted here -->
+    </div>
+    <button class="modal-nav next">&gt;</button>
+  </div>
 
-    <!-- Mobile Toggle -->
-    <div class="md:hidden flex items-center">
-      <button id="mobile-menu-toggle" class="text-white text-2xl focus:outline-none">
-        <i class="fa-solid fa-bars"></i>
-      </button>
+  <div class="bg-black py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="mb-12">
+        <h2 class="text-3xl font-bold text-white mb-4">Our Shop</h2>
+        <hr class="border-gray-700">
+      </div>
+      
+      <!-- Contact Modal -->
+      <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-gray-800 rounded-lg w-11/12 md:w-1/2 lg:w-1/3 p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold">Confirm Your Order</h3>
+            <button id="close-modal" class="text-gray-400 hover:text-white">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          
+          <div class="mb-6">
+            <div id="cart-items" class="mb-4"></div>
+            
+            <!-- Currency Toggle -->
+            <div class="flex justify-center mb-4">
+              <div class="currency-toggle">
+                <div class="currency-slider" id="currency-slider"></div>
+                <div class="currency-option currency-active" data-currency="usd">USD ($)</div>
+                <div class="currency-option" data-currency="ngn">NGN (₦)</div>
+              </div>
+            </div>
+            
+            <div class="flex justify-between items-center border-t border-gray-700 pt-4">
+              <span class="font-semibold">Total:</span>
+              <span id="cart-total" class="text-xl font-bold text-purple-400">$0.00</span>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <p class="text-gray-400 text-sm mb-4">Choose how you'd like to contact us to complete your purchase:</p>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <button id="confirm-whatsapp" class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center">
+              <i class="fab fa-whatsapp mr-2 text-xl"></i> WhatsApp
+            </button>
+            <button id="confirm-discord" class="bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center">
+              <i class="fab fa-discord mr-2 text-xl"></i> Discord
+            </button>
+          </div>
+        </div>
+      </div>
+     
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        {% for product in products %}
+        <!-- Product Card -->
+        <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
+          <!-- Sale Badge -->
+          {% if product.status == 'sale' %}
+          <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+            SALE
+          </div>
+          {% elif product.status == 'sold' %}
+          <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+            SOLD
+          </div>
+          {% endif %}
+          
+          <!-- CORRECTED: Image/Video Slider for New Model -->
+          <div class="product-media-container">
+            <div class="product-media-slider" id="slider-{{ forloop.counter0 }}">
+              {% if product.media_files.all %}
+                {% for media in product.media_files.all %}
+                  <div class="product-media-slide" data-media-type="{% if media.image %}image{% else %}video{% endif %}">
+                    {% if media.image %}
+                      <img src="{{ media.image.url }}" alt="{{ product.name }}" class="cursor-pointer" data-full-src="{{ media.image.url }}">
+                    {% else %}
+                      <video muted loop class="cursor-pointer" data-full-src="{{ media.video.url }}">
+                        <source src="{{ media.video.url }}" type="video/mp4">
+                      </video>
+                      <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
+                          <i class="fa-solid fa-play text-white text-lg"></i>
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              {% else %}
+                <!-- Fallback if no media -->
+                <div class="product-media-slide">
+                  <div class="w-full h-full flex items-center justify-center bg-gray-800">
+                    <i class="fa-solid fa-image text-gray-400 text-4xl"></i>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- CORRECTED: Slider Controls -->
+            {% if product.media_files.all.count > 1 %}
+            <button class="slider-arrow prev" onclick="slideMedia('slider-{{ forloop.counter0 }}', -1)">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slider-arrow next" onclick="slideMedia('slider-{{ forloop.counter0 }}', 1)">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="slider-controls">
+              {% for media in product.media_files.all %}
+              <div class="slider-dot {% if forloop.first %}active{% endif %}" 
+                   onclick="goToSlide('slider-{{ forloop.parentloop.counter0 }}', {{ forloop.counter0 }})"></div>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          
+          <div class="p-5">
+            <h5 class="text-white font-semibold text-lg mb-2">{{ product.name }}</h5>
+            <p class="text-gray-400 text-sm mb-4">{{ product.description|truncatewords:15 }}</p>
+            
+            <!-- Dual Currency Price Display -->
+            <div class="price-container mb-4">
+              <div class="price-usd">${{ product.current_price }}</div>
+              <div class="price-ngn">₦{{ product.get_naira_price|floatformat:0 }}</div>
+              {% if product.is_on_sale and product.sale_price %}
+              <div class="text-gray-400 line-through text-sm">
+                ${{ product.price }} / ₦{{ product.get_original_naira_price|floatformat:0 }}
+              </div>
+              {% endif %}
+            </div>
+
+            {% if product.status != 'sold' %}
+            <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300"
+                    data-product="{{ product.name }}" 
+                    data-price="{{ product.current_price }}"
+                    data-description="{{ product.description|truncatewords:15 }}">
+              Buy Now
+            </button>
+            {% else %}
+            <button class="w-full bg-gray-600 text-gray-300 py-2 rounded-lg cursor-not-allowed" disabled>
+              Sold Out
+            </button>
+            {% endif %}
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-span-4 text-center py-12">
+          <div class="text-gray-400 text-lg mb-4">
+            <i class="fa-solid fa-box-open text-4xl mb-3"></i>
+            <p>No products available at the moment.</p>
+          </div>
+          <p class="text-gray-500">Check back soon for new items!</p>
+        </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
-</nav>
 
-<!-- Mobile Dropdown placed OUTSIDE nav -->
-<div id="mobile-menu" 
-     class="hidden absolute left-0 top-[90px] w-full bg-black md:hidden px-6 py-6 flex flex-col items-center gap-6 text-base z-50 shadow-lg rounded-xl border border-purple-900">
+  <!-- Footer Section -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="max-w-6xl mx-auto px-6">
+      <!-- Main Footer Content -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <!-- Company Info -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-transparent mr-3">
+              <img src="{% static 'images/logo1.png' %}" alt="Cauxie Sales" class="w-full h-full object-contain">
+            </div>
+            <span class="text-2xl font-bold text-white">CAUXIE-SALES</span>
+          </div>
+          <p class="text-gray-400 mb-6 max-w-md">
+            Your trusted marketplace for Call of Duty: Mobile accounts, skins, and gaming accessories. 
+            We provide secure transactions and premium gaming experiences.
+          </p>
+          <div class="flex space-x-4">
+            <a href="https://wa.me/+2347015902747" target="_blank" class="bg-green-500 hover:bg-green-600 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+              <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp" class="w-6 h-6">
+            </a>
+            <a href="https://facebook.com/cauxiesales" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+              <img src="{% static 'images/facebook.png' %}" alt="Facebook" class="w-6 h-6">
+            </a>
+            <a href="https://instagram.com/cauxiesales" target="_blank" class="bg-pink-600 hover:bg-pink-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+              <img src="{% static 'images/instagram.png' %}" alt="Instagram" class="w-6 h-6">
+            </a>
+            <a href="https://twitter.com/cauxiesales" target="_blank" class="bg-blue-400 hover:bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
+              <img src="{% static 'images/x.png' %}" alt="Twitter" class="w-6 h-6">
+            </a>
+          </div>
+        </div>
 
-  <a href="{% url 'home' %}" class="text-gray-400 hover:text-white font-semibold text-center">Home</a>
-  <a href="{% url 'shop' %}" class="text-gray-400 hover:text-white font-semibold text-center">Shop</a>
-  
-   <a href="{% url 'battle' %}" class="text-purple-500 hover:text-purple-400 font-semibold flex items-center gap-2 transition duration-300">
-      <i class="fa-solid fa-fire text-red-500"></i> Battle
-    </a>
-  
-  <a href="#contact" class="text-gray-400 hover:text-white font-semibold text-center">Contact Us</a>
-  
-  <a href="{% url 'request' %}" class="bg-purple-500 text-black px-6 py-3 rounded-full flex items-center gap-2 justify-center text-sm font-semibold shadow-md hover:bg-[#d000ff] hover:text-white transition mt-2">
-    Make Requests <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-  </a>
-</div>
+        <!-- Quick Links -->
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+          <ul class="space-y-3">
+            <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+            <li><a href="{% url 'shop' %}" class="text-gray-400 hover:text-white transition duration-300">Shop</a></li>
+            <li><a href="{% url 'about' %}" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+            <li><a href="{% url 'privacy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a></li>
+            <li><a href="{% url 'terms' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a></li>
+          </ul>
+        </div>
 
+        <!-- Contact Info -->
+        <div id="contact">
+          <h3 class="text-lg font-semibold mb-6">Contact Info</h3>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                <i class="fa-solid fa-location-dot text-xs text-white"></i>
+              </div>
+              <p class="text-gray-400">Kogo 3, Bwari Abuja, Nigeria</p>
+            </div>
+            <div class="flex items-center">
+              <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fa-solid fa-phone text-xs text-white"></i>
+              </div>
+              <a href="tel:+23497015902747" class="text-gray-400 hover:text-white transition duration-300">+234 (701) 590-2747</a>
+            </div>
+            <div class="flex items-center">
+              <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fa-solid fa-envelope text-xs text-white"></i>
+              </div>
+              <a href="mailto:christianchinonso000@gmail.com" class="text-gray-400 hover:text-white transition duration-300">christianchinonso000@gmail.com</a>
+            </div>
+            <div class="flex items-center">
+              <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <i class="fa-solid fa-clock text-xs text-white"></i>
+              </div>
+              <p class="text-gray-400">24/7 Customer Support</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Newsletter Subscription -->
+      <div class="bg-gray-800 rounded-xl p-8 mb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <h3 class="text-xl font-bold mb-2">Stay Updated</h3>
+            <p class="text-gray-400">Subscribe to our newsletter for new product updates and exclusive offers.</p>
+          </div>
+          <div>
+            <form id="newsletterForm" method="POST" action="{% url 'subscribe_newsletter' %}" class="flex flex-col sm:flex-row gap-3">
+              {% csrf_token %}
+              <input type="email" 
+                     name="email" 
+                     placeholder="Enter your email" 
+                     class="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                     required>
+              <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300 whitespace-nowrap">
+                Subscribe
+              </button>
+            </form>
+            <div id="subscriptionMessage" class="mt-2 text-sm"></div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Payment Methods -->
+      <div class="text-center mb-8">
+        <h4 class="text-gray-400 mb-4">We Accept</h4>
+        <div class="flex justify-center items-center space-x-4 flex-wrap">
+          <img src="{% static 'images/ethereum.png' %}" alt="Ethereum" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+          <img src="{% static 'images/tether.png' %}" alt="USDT" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+          <img src="{% static 'images/btc.png' %}" alt="Bitcoin" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+          <img src="{% static 'images/bt.png' %}" alt="Bank Transfer" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="border-t border-gray-800 pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-400 text-sm mb-4 md:mb-0">
+            © 2025 Cauxie Sales. All rights reserved.
+          </p>
+          <div class="flex space-x-6">
+            <a href="{% url 'privacy' %}" class="text-gray-400 hover:text-white text-sm transition duration-300">Privacy Policy</a>
+            <a href="{% url 'terms' %}" class="text-gray-400 hover:text-white text-sm transition duration-300">Terms of Service</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Refund Policy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CORRECTED: JavaScript for Slider and Modal -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    // Slider functionality
+    function slideMedia(sliderId, direction) {
+      const slider = document.getElementById(sliderId);
+      if (!slider) return;
+      
+      const slides = slider.querySelectorAll('.product-media-slide');
+      const dots = slider.parentElement.querySelectorAll('.slider-dot');
+      
+      // Find current slide index
+      const currentIndex = Math.round(-parseInt(slider.style.transform.replace('translateX(', '').replace('%)', '')) / 100) || 0;
+      
+      let newIndex = currentIndex + direction;
+      if (newIndex < 0) newIndex = slides.length - 1;
+      if (newIndex >= slides.length) newIndex = 0;
+      
+      slider.style.transform = `translateX(-${newIndex * 100}%)`;
+      
+      // Update dots
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === newIndex);
+      });
+    }
+
+    function goToSlide(sliderId, index) {
+      const slider = document.getElementById(sliderId);
+      if (!slider) return;
+      
+      const dots = slider.parentElement.querySelectorAll('.slider-dot');
+      
+      slider.style.transform = `translateX(-${index * 100}%)`;
+      
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    // Modal functionality
+    let currentModalMedia = [];
+    let currentModalIndex = 0;
+
+    function openMediaModal(mediaArray, startIndex) {
+      currentModalMedia = mediaArray;
+      currentModalIndex = startIndex;
+      updateModalContent();
+      document.getElementById('media-modal').classList.add('active');
+    }
+
+    function updateModalContent() {
+      const modalContent = document.querySelector('.modal-content');
+      const media = currentModalMedia[currentModalIndex];
+      
+      if (media.type === 'image') {
+        modalContent.innerHTML = `<img src="${media.src}" alt="Product image" style="max-width: 100%; max-height: 90vh; object-fit: contain;">`;
+      } else {
+        modalContent.innerHTML = `
+          <video controls autoplay muted style="max-width: 100%; max-height: 90vh; object-fit: contain;">
+            <source src="${media.src}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        `;
+      }
+    }
+
+    function navigateModal(direction) {
+      currentModalIndex += direction;
+      if (currentModalIndex < 0) currentModalIndex = currentModalMedia.length - 1;
+      if (currentModalIndex >= currentModalMedia.length) currentModalIndex = 0;
+      updateModalContent();
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Media modal event listeners
+      const modalClose = document.querySelector('.modal-close');
+      const modalPrev = document.querySelector('.modal-nav.prev');
+      const modalNext = document.querySelector('.modal-nav.next');
+      const mediaModal = document.getElementById('media-modal');
+
+      if (modalClose) {
+        modalClose.addEventListener('click', function() {
+          mediaModal.classList.remove('active');
+        });
+      }
+
+      if (modalPrev) {
+        modalPrev.addEventListener('click', function() {
+          navigateModal(-1);
+        });
+      }
+
+      if (modalNext) {
+        modalNext.addEventListener('click', function() {
+          navigateModal(1);
+        });
+      }
+
+      // Close modal on background click
+      if (mediaModal) {
+        mediaModal.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+          }
+        });
+      }
+
+      // Product media click events
+      document.querySelectorAll('.product-media-slide img, .product-media-slide video').forEach(media => {
+        media.addEventListener('click', function() {
+          const slider = this.closest('.product-media-slider');
+          if (!slider) return;
+          
+          const slides = slider.querySelectorAll('.product-media-slide');
+          const mediaArray = Array.from(slides).map(slide => {
+            const img = slide.querySelector('img');
+            const video = slide.querySelector('video');
+            return {
+              type: img ? 'image' : 'video',
+              src: img ? img.getAttribute('data-full-src') : (video ? video.getAttribute('data-full-src') : '')
+            };
+          }).filter(media => media.src); // Filter out empty sources
+          
+          if (mediaArray.length === 0) return;
+          
+          // Find current slide index
+          const currentIndex = Math.round(-parseInt(slider.style.transform.replace('translateX(', '').replace('%)', '')) / 100) || 0;
+          
+          openMediaModal(mediaArray, Math.max(0, currentIndex));
+        });
+      });
+
+      // Mobile menu functionality
       const toggleButton = document.getElementById('mobile-menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
       
       if (toggleButton && mobileMenu) {
         toggleButton.addEventListener('click', function() {
           mobileMenu.classList.toggle('hidden');
-          
-          // Change icon when menu is open/closed
           const icon = toggleButton.querySelector('i');
           if (mobileMenu.classList.contains('hidden')) {
             icon.classList.remove('fa-xmark');
@@ -300,7 +858,6 @@
           }
         });
         
-        // Close menu when clicking outside
         document.addEventListener('click', function(event) {
           const isClickInsideNav = event.target.closest('nav');
           const isToggleButton = event.target.closest('#mobile-menu-toggle');
@@ -313,519 +870,167 @@
           }
         });
       }
+
+      // Cart and currency functionality
+      let cart = [];
+      let currentCurrency = 'usd';
+      const exchangeRate = 1500;
+      const whatsappNumber = "2347015902747";
+      const discordUsername = "cauxiesales";
+
+      function initCurrencyToggle() {
+        const slider = document.getElementById('currency-slider');
+        const options = document.querySelectorAll('.currency-option');
+        if (!slider || options.length === 0) return;
+        
+        const sliderWidth = 100 / options.length;
+        
+        slider.style.width = `${sliderWidth}%`;
+        slider.style.transform = 'translateX(0)';
+        
+        options.forEach(option => {
+          option.addEventListener('click', function() {
+            const currency = this.getAttribute('data-currency');
+            options.forEach(opt => opt.classList.remove('currency-active'));
+            this.classList.add('currency-active');
+            
+            if (currency === 'usd') {
+              slider.style.transform = 'translateX(0)';
+            } else {
+              slider.style.transform = `translateX(100%)`;
+            }
+            
+            currentCurrency = currency;
+            updateCart();
+          });
+        });
+      }
+
+      const buyButtons = document.querySelectorAll('.buy-btn');
+      buyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const product = this.getAttribute('data-product');
+          const price = this.getAttribute('data-price');
+          const description = this.getAttribute('data-description');
+          
+          cart.push({ product, price, description });
+          updateCart();
+          document.getElementById('contact-modal').classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('contact-modal').classList.add('hidden');
+      });
+
+      function formatCurrency(amount, currency) {
+        if (currency === 'ngn') {
+          return `₦${(amount * exchangeRate).toLocaleString()}`;
+        } else {
+          return `$${parseFloat(amount).toFixed(2)}`;
+        }
+      }
+
+      function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        
+        cartItems.innerHTML = '';
+        let totalUSD = 0;
+        
+        cart.forEach(item => {
+          const itemElement = document.createElement('div');
+          itemElement.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
+          
+          const itemPrice = parseFloat(item.price);
+          const displayPrice = currentCurrency === 'usd' ? 
+            formatCurrency(itemPrice, 'usd') : 
+            formatCurrency(itemPrice, 'ngn');
+          
+          itemElement.innerHTML = `
+            <div class="flex-1">
+              <div class="font-medium">${item.product}</div>
+              <div class="text-sm text-gray-400">${item.description}</div>
+            </div>
+            <span class="text-purple-400 font-semibold">${displayPrice}</span>
+          `;
+          cartItems.appendChild(itemElement);
+          totalUSD += itemPrice;
+        });
+        
+        const displayTotal = currentCurrency === 'usd' ? 
+          formatCurrency(totalUSD, 'usd') : 
+          formatCurrency(totalUSD, 'ngn');
+        
+        cartTotal.textContent = displayTotal;
+      }
+
+      document.getElementById('confirm-whatsapp').addEventListener('click', function() {
+        let totalUSD = 0;
+        cart.forEach(item => {
+          totalUSD += parseFloat(item.price);
+        });
+        
+        let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
+        cart.forEach(item => {
+          message += `• ${item.product} - $${item.price} (₦${(parseFloat(item.price) * exchangeRate).toLocaleString()})%0A`;
+        });
+        
+        message += `%0ATotal: $${totalUSD.toFixed(2)} (USD) / ₦${(totalUSD * exchangeRate).toLocaleString()} (NGN)%0A%0A`;
+        message += "Please let me know how to complete the payment.";
+        
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+        window.open(whatsappURL, '_blank');
+        
+        cart = [];
+        document.getElementById('contact-modal').classList.add('hidden');
+      });
+
+      document.getElementById('confirm-discord').addEventListener('click', function() {
+        let totalUSD = 0;
+        cart.forEach(item => {
+          totalUSD += parseFloat(item.price);
+        });
+        
+        let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
+        cart.forEach(item => {
+          message += `• ${item.product} - $${item.price} (₦${(parseFloat(item.price) * exchangeRate).toLocaleString()})%0A`;
+        });
+        
+        message += `%0ATotal: $${totalUSD.toFixed(2)} (USD) / ₦${(totalUSD * exchangeRate).toLocaleString()} (NGN)%0A%0A`;
+        message += "Please let me know how to complete the payment.";
+        
+        const discordURL = `https://discord.com/users/${discordUsername}`;
+        window.open(discordURL, '_blank');
+        
+        cart = [];
+        document.getElementById('contact-modal').classList.add('hidden');
+      });
+
+      // Initialize currency toggle
+      initCurrencyToggle();
+
+      // Skeleton loader
+      window.addEventListener('load', function() {
+        const skeletonLoader = document.getElementById('skeleton-loader');
+        if (skeletonLoader) {
+          skeletonLoader.style.opacity = '0';
+          setTimeout(function() {
+            skeletonLoader.style.display = 'none';
+          }, 500);
+        }
+      });
+
+      setTimeout(function() {
+        const skeletonLoader = document.getElementById('skeleton-loader');
+        if (skeletonLoader && skeletonLoader.style.display !== 'none') {
+          skeletonLoader.style.opacity = '0';
+          setTimeout(function() {
+            skeletonLoader.style.display = 'none';
+          }, 500);
+        }
+      }, 5000);
     });
   </script>
-
-  <div class="bg-black py-16">
-  <div class="max-w-6xl mx-auto px-6">
-    <!-- Left-aligned heading with HR -->
-    <div class="mb-12">
-      <h2 class="text-3xl font-bold text-white mb-4">Our Shop</h2>
-      <hr class="border-gray-700">
-    </div>
-    
-    <!-- Contact Modal -->
-    <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
-      <div class="bg-gray-800 rounded-lg w-11/12 md:w-1/2 lg:w-1/3 p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-xl font-bold">Confirm Your Order</h3>
-          <button id="close-modal" class="text-gray-400 hover:text-white">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        
-        <div class="mb-6">
-          <div id="cart-items" class="mb-4">
-            <!-- Cart items will be added here -->
-          </div>
-          
-          <!-- Currency Toggle -->
-          <div class="flex justify-center mb-4">
-            <div class="currency-toggle">
-              <div class="currency-slider" id="currency-slider"></div>
-              <div class="currency-option currency-active" data-currency="usd">USD ($)</div>
-              <div class="currency-option" data-currency="ngn">NGN (₦)</div>
-            </div>
-          </div>
-          
-          <div class="flex justify-between items-center border-t border-gray-700 pt-4">
-            <span class="font-semibold">Total:</span>
-            <span id="cart-total" class="text-xl font-bold text-purple-400">$0.00</span>
-          </div>
-        </div>
-        
-        <div class="mb-6">
-          <p class="text-gray-400 text-sm mb-4">Choose how you'd like to contact us to complete your purchase:</p>
-        </div>
-        
-        <div class="grid grid-cols-2 gap-4">
-          <button id="confirm-whatsapp" class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center">
-            <i class="fab fa-whatsapp mr-2 text-xl"></i> WhatsApp
-          </button>
-          <button id="confirm-discord" class="bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center">
-            <i class="fab fa-discord mr-2 text-xl"></i> Discord
-          </button>
-        </div>
-      </div>
-    </div>
-   
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-      {% for product in products %}
-      <!-- Product Card -->
-      <div class="product bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-purple-900/30 relative">
-        <!-- Sale Badge -->
-        {% if product.status == 'sale' %}
-        <div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
-          SALE
-        </div>
-        {% elif product.status == 'sold' %}
-        <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
-          SOLD
-        </div>
-        {% endif %}
-        
-        <!-- Video or Image -->
-        <div class="h-48 bg-gray-800 flex items-center justify-center relative">
-          {% if product.video %}
-          <video class="w-full h-full object-cover" muted loop>
-            <source src="{{ product.video.url }}" type="video/mp4">
-          </video>
-          <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-            <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
-              <i class="fa-solid fa-play text-white text-2xl"></i>
-            </div>
-          </div>
-          {% elif product.image %}
-          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
-          {% else %}
-          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center">
-            <i class="fa-solid fa-image text-white text-2xl"></i>
-          </div>
-          {% endif %}
-        </div>
-        
-        <div class="p-5">
-          <h5 class="p-name text-white font-semibold text-lg mb-2">{{ product.name }}</h5>
-          <p class="text-gray-400 text-sm mb-4">{{ product.description|truncatewords:15 }}</p>
-          <h4 class="p-price text-purple-500 font-bold text-xl mb-4">
-            ${{ product.current_price }}
-            {% if product.is_on_sale and product.sale_price %}
-            <span class="text-gray-400 line-through text-sm ml-2">${{ product.price }}</span>
-            {% endif %}
-          </h4>
-          {% if product.status != 'sold' %}
-          <button class="buy-btn w-full bg-purple-600 text-white py-2 rounded-lg opacity-0 transform translate-y-5 transition-all duration-300"
-                  data-product="{{ product.name }}" 
-                  data-price="{{ product.current_price }}"
-                  data-description="{{ product.description|truncatewords:15 }}">
-            Buy Now
-          </button>
-          {% else %}
-          <button class="w-full bg-gray-600 text-gray-300 py-2 rounded-lg cursor-not-allowed" disabled>
-            Sold Out
-          </button>
-          {% endif %}
-        </div>
-      </div>
-      {% empty %}
-      <div class="col-span-4 text-center py-12">
-        <div class="text-gray-400 text-lg mb-4">
-          <i class="fa-solid fa-box-open text-4xl mb-3"></i>
-          <p>No products available at the moment.</p>
-        </div>
-        <p class="text-gray-500">Check back soon for new items!</p>
-      </div>
-      {% endfor %}
-    </div>
-       
-      </div>
-       </div>
-
-    <!--- Footer Section -->
-<footer class="bg-gray-900 text-white pt-16 pb-8">
-  <div class="max-w-6xl mx-auto px-6">
-    <!-- Main Footer Content -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-      <!-- Company Info -->
-      <div class="lg:col-span-2">
-        <div class="flex items-center mb-6">
-          <div class="w-12 h-12 bg-transparent mr-3">
-            <img src="{% static 'images/logo1.png' %}" alt="Cauxie Sales" class="w-full h-full object-contain">
-          </div>
-          <span class="text-2xl font-bold text-white">CAUXIE-SALES</span>
-        </div>
-        <p class="text-gray-400 mb-6 max-w-md">
-          Your trusted marketplace for Call of Duty: Mobile accounts, skins, and gaming accessories. 
-          We provide secure transactions and premium gaming experiences.
-        </p>
-        <div class="flex space-x-4">
-          <a href="https://wa.me/+2347015902747" target="_blank" class="bg-green-500 hover:bg-green-600 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
-            <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp" class="w-6 h-6">
-          </a>
-          <a href="https://facebook.com/cauxiesales" target="_blank" class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
-            <img src="{% static 'images/facebook.png' %}" alt="Facebook" class="w-6 h-6">
-          </a>
-          <a href="https://instagram.com/cauxiesales" target="_blank" class="bg-pink-600 hover:bg-pink-700 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
-            <img src="{% static 'images/instagram.png' %}" alt="Instagram" class="w-6 h-6">
-          </a>
-          <a href="https://twitter.com/cauxiesales" target="_blank" class="bg-blue-400 hover:bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center transition duration-300">
-            <img src="{% static 'images/x.png' %}" alt="Twitter" class="w-6 h-6">
-          </a>
-        </div>
-      </div>
-
-      <!-- Quick Links -->
-      <div>
-        <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
-        <ul class="space-y-3">
-         <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
-          <li><a href="{% url 'shop' %}" class="text-gray-400 hover:text-white transition duration-300">Shop</a></li>
-          <li><a href="{% url 'about' %}" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
-          <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
-          <li><a href="{% url 'privacy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a></li>
-          <li><a href="{% url 'terms' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a></li>
-        </ul>
-      </div>
-
-     <!-- Contact Info -->
-      <div id="contact">
-        <h3 class="text-lg font-semibold mb-6">Contact Info</h3>
-        <div class="space-y-4">
-          <div class="flex items-start">
-            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-              <i class="fa-solid fa-location-dot text-xs text-white"></i>
-            </div>
-            <p class="text-gray-400">Kogo 3, Bwari Abuja, Nigeria</p>
-          </div>
-          <div class="flex items-center">
-            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-              <i class="fa-solid fa-phone text-xs text-white"></i>
-            </div>
-            <a href="tel:+23497015902747" class="text-gray-400 hover:text-white transition duration-300">+234 (701) 590-2747</a>
-          </div>
-          <div class="flex items-center">
-            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-              <i class="fa-solid fa-envelope text-xs text-white"></i>
-            </div>
-            <a href="christianchinonso000@gmail.com" class="text-gray-400 hover:text-white transition duration-300"></a>
-          </div>
-          <div class="flex items-center">
-            <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-              <i class="fa-solid fa-clock text-xs text-white"></i>
-            </div>
-            <p class="text-gray-400">24/7 Customer Support</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-     <!-- Newsletter Subscription -->
-<div class="bg-gray-800 rounded-xl p-8 mb-12">
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-    <div>
-      <h3 class="text-xl font-bold mb-2">Stay Updated</h3>
-      <p class="text-gray-400">Subscribe to our newsletter for new product updates and exclusive offers.</p>
-    </div>
-    <div>
-      <form id="newsletterForm" method="POST" action="{% url 'subscribe_newsletter' %}" class="flex flex-col sm:flex-row gap-3">
-        {% csrf_token %}
-        <input type="email" 
-               name="email" 
-               placeholder="Enter your email" 
-               class="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
-               required>
-        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300 whitespace-nowrap">
-          Subscribe
-        </button>
-      </form>
-      <div id="subscriptionMessage" class="mt-2 text-sm"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const newsletterForm = document.getElementById('newsletterForm');
-    const subscriptionMessage = document.getElementById('subscriptionMessage');
-    
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitButton = this.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
-            
-            // Show loading state
-            submitButton.textContent = 'Subscribing...';
-            submitButton.disabled = true;
-            subscriptionMessage.textContent = '';
-            subscriptionMessage.className = 'mt-2 text-sm';
-            
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    subscriptionMessage.textContent = data.message;
-                    subscriptionMessage.className = 'mt-2 text-sm text-green-400';
-                    newsletterForm.reset();
-                } else {
-                    subscriptionMessage.textContent = data.message || 'An error occurred. Please try again.';
-                    subscriptionMessage.className = 'mt-2 text-sm text-red-400';
-                    
-                    // Show specific field errors if available
-                    if (data.errors && data.errors.email) {
-                        subscriptionMessage.textContent = data.errors.email[0];
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                subscriptionMessage.textContent = 'An error occurred. Please try again.';
-                subscriptionMessage.className = 'mt-2 text-sm text-red-400';
-            })
-            .finally(() => {
-                submitButton.textContent = originalText;
-                submitButton.disabled = false;
-            });
-        });
-    }
-});
-</script>
-
-    <!-- Payment Methods -->
-    <div class="text-center mb-8">
-      <h4 class="text-gray-400 mb-4">We Accept</h4>
-      <div class="flex justify-center items-center space-x-4 flex-wrap">
-       
-        <img src="{% static 'images/ethereum.png' %}" alt="Etheruem" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
-        <img src="{% static 'images/tether.png' %}" alt="Usdt" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
-        <img src="{% static 'images/btc.png' %}" alt="Bitcoin" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
-        <img src="{% static 'images/bt.png' %}" alt="Bank Transfer" class="h-10 w-auto grayscale hover:grayscale-0 transition duration-300">
-      </div>
-    </div>
-
-    <!-- Copyright -->
-    <div class="border-t border-gray-800 pt-8">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-400 text-sm mb-4 md:mb-0">
-          © 2025 Cauxie Sales. All rights reserved.
-        </p>
-        <div class="flex space-x-6">
-          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Privacy Policy</a>
-          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Terms of Service</a>
-          <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">Refund Policy</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- Contact Integration Script -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Hide skeleton loader when page is fully loaded
-    window.addEventListener('load', function() {
-      const skeletonLoader = document.getElementById('skeleton-loader');
-      if (skeletonLoader) {
-        skeletonLoader.style.opacity = '0';
-        setTimeout(function() {
-          skeletonLoader.style.display = 'none';
-        }, 500); // Match the transition duration
-      }
-    });
-    
-    // If page takes too long to load, hide skeleton after 5 seconds
-    setTimeout(function() {
-      const skeletonLoader = document.getElementById('skeleton-loader');
-      if (skeletonLoader && skeletonLoader.style.display !== 'none') {
-        skeletonLoader.style.opacity = '0';
-        setTimeout(function() {
-          skeletonLoader.style.display = 'none';
-        }, 500);
-      }
-    }, 5000);
-
-    // Store cart items
-    let cart = [];
-    let currentCurrency = 'usd';
-    const exchangeRate = 1500; // 1 USD = 1500 NGN (adjust as needed)
-    const whatsappNumber = "2347015902747"; // Your WhatsApp number without + or 0
-    const discordUsername = "cauxiesales"; // Your Discord username
-    
-    // Initialize currency toggle
-    function initCurrencyToggle() {
-      const slider = document.getElementById('currency-slider');
-      const options = document.querySelectorAll('.currency-option');
-      const sliderWidth = 100 / options.length; // 50% for two options
-      
-      // Set initial slider position
-      slider.style.width = `${sliderWidth}%`;
-      slider.style.transform = 'translateX(0)';
-      
-      // Add click events to currency options
-      options.forEach(option => {
-        option.addEventListener('click', function() {
-          const currency = this.getAttribute('data-currency');
-          
-          // Update active class
-          options.forEach(opt => opt.classList.remove('currency-active'));
-          this.classList.add('currency-active');
-          
-          // Move slider
-          if (currency === 'usd') {
-            slider.style.transform = 'translateX(0)';
-          } else {
-            slider.style.transform = `translateX(100%)`;
-          }
-          
-          // Update currency and recalculate
-          currentCurrency = currency;
-          updateCart();
-        });
-      });
-    }
-    
-    // Buy buttons event listeners
-    const buyButtons = document.querySelectorAll('.buy-btn');
-    buyButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const product = this.getAttribute('data-product');
-        const price = this.getAttribute('data-price');
-        const description = this.getAttribute('data-description');
-        
-        // Add to cart
-        cart.push({ product, price, description });
-        updateCart();
-        
-        // Show modal
-        document.getElementById('contact-modal').classList.remove('hidden');
-      });
-    });
-    
-    // Close modal
-    document.getElementById('close-modal').addEventListener('click', function() {
-      document.getElementById('contact-modal').classList.add('hidden');
-    });
-    
-    // Format currency
-    function formatCurrency(amount, currency) {
-      if (currency === 'ngn') {
-        return `₦${amount.toLocaleString()}`;
-      } else {
-        return `$${amount.toFixed(2)}`;
-      }
-    }
-    
-    // Update cart function
-    function updateCart() {
-      const cartItems = document.getElementById('cart-items');
-      const cartTotal = document.getElementById('cart-total');
-      
-      // Clear previous items
-      cartItems.innerHTML = '';
-      
-      // Calculate total and add items
-      let totalUSD = 0;
-      cart.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
-        
-        const itemPrice = parseFloat(item.price);
-        const displayPrice = currentCurrency === 'usd' ? 
-          formatCurrency(itemPrice, 'usd') : 
-          formatCurrency(itemPrice * exchangeRate, 'ngn');
-        
-        itemElement.innerHTML = `
-          <div class="flex-1">
-            <div class="font-medium">${item.product}</div>
-            <div class="text-sm text-gray-400">${item.description}</div>
-          </div>
-          <span class="text-purple-400 font-semibold">${displayPrice}</span>
-        `;
-        cartItems.appendChild(itemElement);
-        
-        // Add to total
-        totalUSD += itemPrice;
-      });
-      
-      // Calculate total in selected currency
-      const displayTotal = currentCurrency === 'usd' ? 
-        formatCurrency(totalUSD, 'usd') : 
-        formatCurrency(totalUSD * exchangeRate, 'ngn');
-      
-      // Update total
-      cartTotal.textContent = displayTotal;
-    }
-    
-    // WhatsApp confirmation
-    document.getElementById('confirm-whatsapp').addEventListener('click', function() {
-      // Calculate total in USD for message
-      let totalUSD = 0;
-      cart.forEach(item => {
-        totalUSD += parseFloat(item.price);
-      });
-      
-      // Create WhatsApp message
-      let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
-      
-      cart.forEach(item => {
-        message += `• ${item.product} - $${item.price}%0A`;
-      });
-      
-      message += `%0ATotal: $${totalUSD.toFixed(2)} (USD) / ₦${(totalUSD * exchangeRate).toLocaleString()} (NGN)%0A%0A`;
-      message += "Please let me know how to complete the payment.";
-      
-      // Create WhatsApp URL
-      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
-      
-      // Open WhatsApp
-      window.open(whatsappURL, '_blank');
-      
-      // Reset cart and close modal
-      cart = [];
-      document.getElementById('contact-modal').classList.add('hidden');
-    });
-    
-    // Discord confirmation
-    document.getElementById('confirm-discord').addEventListener('click', function() {
-      // Calculate total in USD for message
-      let totalUSD = 0;
-      cart.forEach(item => {
-        totalUSD += parseFloat(item.price);
-      });
-      
-      // Create Discord message
-      let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
-      
-      cart.forEach(item => {
-        message += `• ${item.product} - $${item.price}%0A`;
-      });
-      
-      message += `%0ATotal: $${totalUSD.toFixed(2)} (USD) / ₦${(totalUSD * exchangeRate).toLocaleString()} (NGN)%0A%0A`;
-      message += "Please let me know how to complete the payment.";
-      
-      // Create Discord URL (opens app if installed, otherwise web)
-      const discordURL = `https://discord.com/users/${discordUsername}`;
-      
-      // Open Discord
-      window.open(discordURL, '_blank');
-      
-      // Reset cart and close modal
-      cart = [];
-      document.getElementById('contact-modal').classList.add('hidden');
-    });
-    
-    // Initialize currency toggle
-    initCurrencyToggle();
-  });
-</script>
-
 </body>
 </html>
