@@ -1,13 +1,27 @@
 # accounts/admin.py
 from django.contrib import admin
-from .models import Product, Review
+from django import forms
+from .models import Product, Review, ProductMedia, GamingAccessory, Tournament, PrizeDistribution, NewsletterSubscription
 
-
-from django.contrib import admin
-from .models import Product, ProductMedia
+class ProductMediaForm(forms.ModelForm):
+    class Meta:
+        model = ProductMedia
+        fields = ['image', 'video', 'order']
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        image = cleaned_data.get('image')
+        video = cleaned_data.get('video')
+        
+        # Check if both image and video are provided
+        if image and video:
+            raise forms.ValidationError("A media item cannot have both image and video. Please choose either an image OR a video.")
+        
+        return cleaned_data
 
 class ProductMediaInline(admin.TabularInline):
     model = ProductMedia
+    form = ProductMediaForm
     extra = 1
     fields = ['image', 'video', 'order']
     verbose_name = "Media File"
@@ -30,27 +44,20 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductMedia)
 class ProductMediaAdmin(admin.ModelAdmin):
-    list_display = ['product', 'get_media_type', 'order', 'created_at']
+    list_display = ['product', 'media_type', 'order', 'created_at']
     list_filter = ['product', 'created_at']
     search_fields = ['product__name']
+    form = ProductMediaForm
     
-    def get_media_type(self, obj):
-        if obj.image:
-            return 'Image'
-        elif obj.video:
-            return 'Video'
-        return 'None'
-    get_media_type.short_description = 'Media Type'
+    def media_type(self, obj):
+        return obj.media_type
+    media_type.short_description = 'Media Type'
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['full_name', 'rating', 'created_at']
     list_filter = ['rating', 'created_at']
     search_fields = ['full_name', 'comment']
-
-# accounts/admin.py
-from django.contrib import admin
-from .models import GamingAccessory
 
 @admin.register(GamingAccessory)
 class GamingAccessoryAdmin(admin.ModelAdmin):
@@ -69,11 +76,7 @@ class GamingAccessoryAdmin(admin.ModelAdmin):
         ('Images', {
             'fields': ('image1', 'image2', 'image3')
         }),
-    ) 
-
-# admin.py
-from django.contrib import admin
-from .models import Tournament, PrizeDistribution
+    )
 
 class PrizeDistributionInline(admin.TabularInline):
     model = PrizeDistribution
@@ -94,11 +97,7 @@ class TournamentAdmin(admin.ModelAdmin):
         ('Rules & Settings', {
             'fields': ('rules', 'structure', 'time_limit', 'allowed_weapons', 'restricted_weapons', 'allowed_maps')
         }),
-    )    
-
-# admin.py
-from django.contrib import admin
-from .models import NewsletterSubscription
+    )
 
 @admin.register(NewsletterSubscription)
 class NewsletterSubscriptionAdmin(admin.ModelAdmin):
@@ -106,4 +105,4 @@ class NewsletterSubscriptionAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'subscribed_at']
     search_fields = ['email']
     readonly_fields = ['subscribed_at']
-    list_editable = ['is_active']       
+    list_editable = ['is_active']
