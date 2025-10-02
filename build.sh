@@ -1,28 +1,4 @@
 #!/usr/bin/env bash
-<<<<<<< HEAD
-# Exit on error
-set -o errexit
-
-echo "🚀 Starting deployment process..."
-
-# 1. Install Python packages
-echo "📦 Installing dependencies..."
-pip install -r requirements.txt
-
-# 2. Setup database structure
-echo "🗄️ Setting up database..."
-python manage.py migrate
-
-# 3. Create admin user
-echo "👑 Creating admin account..."
-python manage.py create_admin
-
-# 4. Collect CSS/JS files
-echo "🎨 Collecting static files..."
-python manage.py collectstatic --noinput
-
-echo "🎉 Deployment completed successfully!"
-=======
 # build.sh
 set -o errexit
 
@@ -50,4 +26,3 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
 echo "Build completed successfully!"
->>>>>>> f258faa3926d10b85ec5ca34f809db4866899fff
