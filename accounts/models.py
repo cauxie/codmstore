@@ -1,6 +1,7 @@
 # accounts/models.py
 from django.db import models
 import random
+from django.core.exceptions import ValidationError
 
 class Account(models.Model):
     name = models.CharField(max_length=200)
@@ -40,8 +41,6 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.full_name} - {self.rating} stars"
 
-from django.db import models
-
 class Product(models.Model):
     STATUS_CHOICES = [
         ('available', 'Available'),
@@ -53,9 +52,6 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     sale_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    # REMOVE these single media fields:
-    # video = models.FileField(upload_to='product_videos/', blank=True, null=True)
-    # image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -76,6 +72,16 @@ class Product(models.Model):
         first_video = self.media_files.filter(video__isnull=False).first()
         return first_video.video if first_video else None
     
+    def get_naira_price(self):
+        """Convert USD price to Naira"""
+        exchange_rate = 1500  # Adjust as needed
+        return float(self.current_price()) * exchange_rate
+    
+    def get_original_naira_price(self):
+        """Convert original USD price to Naira"""
+        exchange_rate = 1500  # Adjust as needed
+        return float(self.price) * exchange_rate
+    
     def __str__(self):
         return self.name
 
@@ -92,11 +98,18 @@ class ProductMedia(models.Model):
     def __str__(self):
         return f"Media for {self.product.name}"
     
-    def save(self, *args, **kwargs):
-        # Ensure either image or video is provided, not both
+    def clean(self):
+        """Validation that works with Django admin forms"""
         if self.image and self.video:
-            raise ValueError("A media item cannot have both image and video")
-        super().save(*args, **kwargs)
+            raise ValidationError("A media item cannot have both image and video. Please choose one.")
+    
+    @property
+    def media_type(self):
+        if self.image:
+            return 'image'
+        elif self.video:
+            return 'video'
+        return 'none'
 
 # accounts/models.py
 class GamingAccessory(models.Model):
@@ -137,8 +150,6 @@ class GamingAccessory(models.Model):
     def __str__(self):
         return self.name  
 
-
-
 # models.py
 from django.db import models
 from django.utils import timezone
@@ -175,7 +186,6 @@ class PrizeDistribution(models.Model):
     def __str__(self):
         return f"{self.tournament.name} - Position {self.position}"  
 
-
 # models.py
 from django.db import models
 
@@ -190,4 +200,4 @@ class NewsletterSubscription(models.Model):
         ordering = ['-subscribed_at']
     
     def __str__(self):
-        return self.email                  
+        return self.email
