@@ -2,13 +2,45 @@
 from django.contrib import admin
 from .models import Product, Review
 
+
+from django.contrib import admin
+from .models import Product, ProductMedia
+
+class ProductMediaInline(admin.TabularInline):
+    model = ProductMedia
+    extra = 1
+    fields = ['image', 'video', 'order']
+    verbose_name = "Media File"
+    verbose_name_plural = "Media Files"
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'status', 'created_at']
+    list_display = ['name', 'price', 'sale_price', 'status', 'created_at']
     list_filter = ['status', 'created_at']
-    list_editable = ['status', 'price']
     search_fields = ['name', 'description']
-    readonly_fields = ['created_at', 'updated_at']
+    inlines = [ProductMediaInline]
+    fieldsets = [
+        (None, {
+            'fields': ['name', 'description', 'status']
+        }),
+        ('Pricing', {
+            'fields': ['price', 'sale_price']
+        }),
+    ]
+
+@admin.register(ProductMedia)
+class ProductMediaAdmin(admin.ModelAdmin):
+    list_display = ['product', 'get_media_type', 'order', 'created_at']
+    list_filter = ['product', 'created_at']
+    search_fields = ['product__name']
+    
+    def get_media_type(self, obj):
+        if obj.image:
+            return 'Image'
+        elif obj.video:
+            return 'Video'
+        return 'None'
+    get_media_type.short_description = 'Media Type'
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
