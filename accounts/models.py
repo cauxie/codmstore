@@ -40,6 +40,8 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.full_name} - {self.rating} stars"
 
+from django.db import models
+
 class Product(models.Model):
     STATUS_CHOICES = [
         ('available', 'Available'),
@@ -51,8 +53,9 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     sale_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    video = models.FileField(upload_to='product_videos/', blank=True, null=True)
-    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    # REMOVE these single media fields:
+    # video = models.FileField(upload_to='product_videos/', blank=True, null=True)
+    # image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='available')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -63,8 +66,37 @@ class Product(models.Model):
     def current_price(self):
         return self.sale_price if self.is_on_sale() else self.price
     
+    def get_primary_image(self):
+        """Get the first image for thumbnail purposes"""
+        first_image = self.media_files.filter(image__isnull=False).first()
+        return first_image.image if first_image else None
+    
+    def get_primary_video(self):
+        """Get the first video for thumbnail purposes"""
+        first_video = self.media_files.filter(video__isnull=False).first()
+        return first_video.video if first_video else None
+    
     def __str__(self):
         return self.name
+
+class ProductMedia(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='media_files')
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    video = models.FileField(upload_to='product_videos/', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)  # For ordering media
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+    
+    def __str__(self):
+        return f"Media for {self.product.name}"
+    
+    def save(self, *args, **kwargs):
+        # Ensure either image or video is provided, not both
+        if self.image and self.video:
+            raise ValueError("A media item cannot have both image and video")
+        super().save(*args, **kwargs)
 
 # accounts/models.py
 class GamingAccessory(models.Model):
