@@ -80,7 +80,7 @@ class Product(models.Model):
     def get_original_naira_price(self):
         """Convert original USD price to Naira"""
         exchange_rate = 1500  # Adjust as needed
-        return float(self.price) * exchange_rate
+        return float(self.price) / exchange_rate
     
     def __str__(self):
         return self.name
