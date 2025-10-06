@@ -544,11 +544,11 @@
             
             <!-- Dual Currency Price Display -->
             <div class="price-container mb-4">
-              <div class="price-usd">${{ product.current_price }}</div>
-              <div class="price-ngn">₦{{ product.get_naira_price|floatformat:0 }}</div>
+              <div class="price-usd">₦{{ product.current_price }}</div>
+              <div class="price-ngn">${{ product.get_naira_price|floatformat:0 }}</div>
               {% if product.is_on_sale and product.sale_price %}
               <div class="text-gray-400 line-through text-sm">
-                ${{ product.price }} / ₦{{ product.get_original_naira_price|floatformat:0 }}
+                ₦{{ product.price }} / ${{ product.get_original_naira_price|floatformat:0 }}
               </div>
               {% endif %}
             </div>
@@ -634,7 +634,7 @@
               <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
                 <i class="fa-solid fa-location-dot text-xs text-white"></i>
               </div>
-              <p class="text-gray-400">Kogo 3, Bwari Abuja, Nigeria</p>
+              <p class="text-gray-400">Abuja, Nigeria</p>
             </div>
             <div class="flex items-center">
               <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
@@ -871,141 +871,148 @@
         });
       }
 
-      // Cart and currency functionality
-      let cart = [];
-      let currentCurrency = 'usd';
-      const exchangeRate = 1500;
-      const whatsappNumber = "2347015902747";
-      const discordUsername = "cauxiesales";
+     // Cart and currency functionality
+let cart = [];
+let currentCurrency = 'usd';
+const exchangeRate = 1500;
+const whatsappNumber = "2347015902747";
+const discordUsername = "cauxie_23319";
 
-      function initCurrencyToggle() {
-        const slider = document.getElementById('currency-slider');
-        const options = document.querySelectorAll('.currency-option');
-        if (!slider || options.length === 0) return;
-        
-        const sliderWidth = 100 / options.length;
-        
-        slider.style.width = `${sliderWidth}%`;
+function initCurrencyToggle() {
+  const slider = document.getElementById('currency-slider');
+  const options = document.querySelectorAll('.currency-option');
+  if (!slider || options.length === 0) return;
+  
+  const sliderWidth = 100 / options.length;
+  
+  slider.style.width = `${sliderWidth}%`;
+  slider.style.transform = 'translateX(0)';
+  
+  options.forEach(option => {
+    option.addEventListener('click', function() {
+      const currency = this.getAttribute('data-currency');
+      options.forEach(opt => opt.classList.remove('currency-active'));
+      this.classList.add('currency-active');
+      
+      if (currency === 'usd') {
         slider.style.transform = 'translateX(0)';
-        
-        options.forEach(option => {
-          option.addEventListener('click', function() {
-            const currency = this.getAttribute('data-currency');
-            options.forEach(opt => opt.classList.remove('currency-active'));
-            this.classList.add('currency-active');
-            
-            if (currency === 'usd') {
-              slider.style.transform = 'translateX(0)';
-            } else {
-              slider.style.transform = `translateX(100%)`;
-            }
-            
-            currentCurrency = currency;
-            updateCart();
-          });
-        });
+      } else {
+        slider.style.transform = `translateX(100%)`;
       }
+      
+      currentCurrency = currency;
+      updateCart();
+    });
+  });
+}
 
-      const buyButtons = document.querySelectorAll('.buy-btn');
-      buyButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const product = this.getAttribute('data-product');
-          const price = this.getAttribute('data-price');
-          const description = this.getAttribute('data-description');
-          
-          cart.push({ product, price, description });
-          updateCart();
-          document.getElementById('contact-modal').classList.remove('hidden');
-        });
-      });
+const buyButtons = document.querySelectorAll('.buy-btn');
+buyButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    const product = this.getAttribute('data-product');
+    const price = this.getAttribute('data-price'); // This should be in Naira
+    const description = this.getAttribute('data-description');
+    
+    cart.push({ product, price, description });
+    updateCart();
+    document.getElementById('contact-modal').classList.remove('hidden');
+  });
+});
 
-      document.getElementById('close-modal').addEventListener('click', function() {
-        document.getElementById('contact-modal').classList.add('hidden');
-      });
+document.getElementById('close-modal').addEventListener('click', function() {
+  document.getElementById('contact-modal').classList.add('hidden');
+});
 
-      function formatCurrency(amount, currency) {
-        if (currency === 'ngn') {
-          return `₦${(amount * exchangeRate).toLocaleString()}`;
-        } else {
-          return `$${parseFloat(amount).toFixed(2)}`;
-        }
-      }
+// Convert from Naira (stored) to USD (display)
+function formatCurrency(amount, currency) {
+  if (currency === 'usd') {
+    return `$${(amount / exchangeRate).toFixed(2)}`; // Convert Naira to USD
+  } else {
+    return `₦${parseFloat(amount).toLocaleString()}`; // Show raw Naira value
+  }
+}
 
-      function updateCart() {
-        const cartItems = document.getElementById('cart-items');
-        const cartTotal = document.getElementById('cart-total');
-        
-        cartItems.innerHTML = '';
-        let totalUSD = 0;
-        
-        cart.forEach(item => {
-          const itemElement = document.createElement('div');
-          itemElement.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
-          
-          const itemPrice = parseFloat(item.price);
-          const displayPrice = currentCurrency === 'usd' ? 
-            formatCurrency(itemPrice, 'usd') : 
-            formatCurrency(itemPrice, 'ngn');
-          
-          itemElement.innerHTML = `
-            <div class="flex-1">
-              <div class="font-medium">${item.product}</div>
-              <div class="text-sm text-gray-400">${item.description}</div>
-            </div>
-            <span class="text-purple-400 font-semibold">${displayPrice}</span>
-          `;
-          cartItems.appendChild(itemElement);
-          totalUSD += itemPrice;
-        });
-        
-        const displayTotal = currentCurrency === 'usd' ? 
-          formatCurrency(totalUSD, 'usd') : 
-          formatCurrency(totalUSD, 'ngn');
-        
-        cartTotal.textContent = displayTotal;
-      }
+function updateCart() {
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  
+  cartItems.innerHTML = '';
+  let totalNGN = 0; // Track total in Naira
+  
+  cart.forEach(item => {
+    const itemElement = document.createElement('div');
+    itemElement.classList.add('flex', 'justify-between', 'items-center', 'mb-2');
+    
+    const itemPrice = parseFloat(item.price); // Price stored in Naira
+    const displayPrice = currentCurrency === 'usd' ? 
+      formatCurrency(itemPrice, 'usd') : 
+      formatCurrency(itemPrice, 'ngn');
+    
+    itemElement.innerHTML = `
+      <div class="flex-1">
+        <div class="font-medium">${item.product}</div>
+        <div class="text-sm text-gray-400">${item.description}</div>
+      </div>
+      <span class="text-purple-400 font-semibold">${displayPrice}</span>
+    `;
+    cartItems.appendChild(itemElement);
+    totalNGN += itemPrice; // Accumulate in Naira
+  });
+  
+  const displayTotal = currentCurrency === 'usd' ? 
+    formatCurrency(totalNGN, 'usd') : 
+    formatCurrency(totalNGN, 'ngn');
+  
+  cartTotal.textContent = displayTotal;
+}
 
-      document.getElementById('confirm-whatsapp').addEventListener('click', function() {
-        let totalUSD = 0;
-        cart.forEach(item => {
-          totalUSD += parseFloat(item.price);
-        });
-        
-        let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
-        cart.forEach(item => {
-          message += `• ${item.product} - $${item.price} (₦${(parseFloat(item.price) * exchangeRate).toLocaleString()})%0A`;
-        });
-        
-        message += `%0ATotal: $${totalUSD.toFixed(2)} (USD) / ₦${(totalUSD * exchangeRate).toLocaleString()} (NGN)%0A%0A`;
-        message += "Please let me know how to complete the payment.";
-        
-        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
-        window.open(whatsappURL, '_blank');
-        
-        cart = [];
-        document.getElementById('contact-modal').classList.add('hidden');
-      });
+document.getElementById('confirm-whatsapp').addEventListener('click', function() {
+  let totalNGN = 0; // Track total in Naira
+  cart.forEach(item => {
+    totalNGN += parseFloat(item.price);
+  });
+  
+  let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
+  cart.forEach(item => {
+    const usdPrice = (parseFloat(item.price) / exchangeRate).toFixed(2);
+    message += `• ${item.product} - ₦${parseFloat(item.price).toLocaleString()} ($${usdPrice})%0A`;
+  });
+  
+  const totalUSD = (totalNGN / exchangeRate).toFixed(2);
+  message += `%0ATotal: ₦${totalNGN.toLocaleString()} (NGN) / $${totalUSD} (USD)%0A%0A`;
+  message += "Please let me know how to complete the payment.";
+  
+  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
+  window.open(whatsappURL, '_blank');
+  
+  cart = [];
+  document.getElementById('contact-modal').classList.add('hidden');
+});
 
-      document.getElementById('confirm-discord').addEventListener('click', function() {
-        let totalUSD = 0;
-        cart.forEach(item => {
-          totalUSD += parseFloat(item.price);
-        });
-        
-        let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
-        cart.forEach(item => {
-          message += `• ${item.product} - $${item.price} (₦${(parseFloat(item.price) * exchangeRate).toLocaleString()})%0A`;
-        });
-        
-        message += `%0ATotal: $${totalUSD.toFixed(2)} (USD) / ₦${(totalUSD * exchangeRate).toLocaleString()} (NGN)%0A%0A`;
-        message += "Please let me know how to complete the payment.";
-        
-        const discordURL = `https://discord.com/users/${discordUsername}`;
-        window.open(discordURL, '_blank');
-        
-        cart = [];
-        document.getElementById('contact-modal').classList.add('hidden');
-      });
+// FIXED: Discord button now uses Naira-stored prices
+document.getElementById('confirm-discord').addEventListener('click', function() {
+  let totalNGN = 0; // Track total in Naira
+  cart.forEach(item => {
+    totalNGN += parseFloat(item.price);
+  });
+  
+  let message = "Hello! I would like to purchase the following items from Cauxie-Sales:%0A%0A";
+  cart.forEach(item => {
+    const usdPrice = (parseFloat(item.price) / exchangeRate).toFixed(2);
+    message += `• ${item.product} - ₦${parseFloat(item.price).toLocaleString()} ($${usdPrice})%0A`;
+  });
+  
+  const totalUSD = (totalNGN / exchangeRate).toFixed(2);
+  message += `%0ATotal: ₦${totalNGN.toLocaleString()} (NGN) / $${totalUSD} (USD)%0A%0A`;
+  message += "Please let me know how to complete the payment.";
+  
+  // Create Discord deeplink with pre-filled message
+  const discordURL = `https://discord.com/users/${discordUsername}?text=${encodeURIComponent(message)}`;
+  window.open(discordURL, '_blank');
+  
+  cart = [];
+  document.getElementById('contact-modal').classList.add('hidden');
+});
 
       // Initialize currency toggle
       initCurrencyToggle();
